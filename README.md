@@ -1,0 +1,2 @@
+# aaniohjattuiotjarjestelma
+Ääniohjattu IoT-järjestelmä
