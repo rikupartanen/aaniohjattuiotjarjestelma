@@ -7,3 +7,11 @@ Aluksi toteutetaan toimiva konvoluutioneuroverkko joka tunnistaa ääntä Python
 
 Projektin jäsenet:
 Riku Partanen, (nimet tähän perään)
+
+
+Projektin vaiheet:
+- Opetellaan äänikomentojen tunnistuksen teoria (deep neural network) Google CoLabissa
+- Opetetaan konvoluutioneuroverkko tunnistamaan äänikomentoja (esim. punainen, sininen, vihreä)
+- Opetellaan toteuttamaan opetettu konvoluutioneuroverkko koodaamalla se ensin Pythonilla vaihe vaiheelta
+- Toteutetaan opetettu konvoluutioneuroverkko C-kielellä vaihe vaiheelta Thingy53-laitteeseen ja käytetään Thingy53:n mikrofonia äänikomentojen keräämiseen
+- Lopuksi ajan salliessa toteutetaan ääniohjattu IoT-järjestelmä Nordic Matter protokollakirjaston avulla. Ääniohjatulla laitteella voisi sytyttää haluamansa värisen ledin verkkoon kytketyissä laitteissa.
