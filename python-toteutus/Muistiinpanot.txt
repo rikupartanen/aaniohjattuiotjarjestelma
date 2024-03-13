@@ -1,1 +1,4 @@
 Muistiinpanoja sekä linkkejä Python-toteutukseen liittyen.
+
+Tensorflow simple audio esimerkki:
+https://www.tensorflow.org/tutorials/audio/simple_audio
