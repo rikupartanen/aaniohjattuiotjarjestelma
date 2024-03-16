@@ -6,7 +6,7 @@ Aiheena toteuttaa IoT-järjestelmä Thingy53-mikrokontrollerille, jota voi ohjat
 Aluksi toteutetaan toimiva konvoluutioneuroverkko joka tunnistaa ääntä Pythonilla, jonka jälkeen tämä muokataan C-kielelle ja siirretään Thingy53:seen.
 
 Projektin jäsenet:
-Riku Partanen, (nimet tähän perään)
+Riku Partanen, Arsi Kyrö, Kimmo Korhonen, Jere Manninen, Antti Rytilahti, Anton Ivanov, Thomas Grönroos, henkilö 8
 
 
 Projektin vaiheet:
