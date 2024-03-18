@@ -151,7 +151,7 @@ def make_spec_ds(ds):
 train_spectrogram_ds = make_spec_ds(train_ds)
 
 
-set_sample = 3  #the output track should be the number 
+set_sample = 3  #the output track should be the number 5
 #Function to get audio values before the Fourier transform:
 for audio, label in train_ds.take(1):
   print("---------------------------------------------")
