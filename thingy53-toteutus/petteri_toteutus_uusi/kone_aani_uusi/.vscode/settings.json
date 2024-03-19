@@ -1,0 +1,10 @@
+{
+    "nrf-connect.applications": [
+        "${workspaceFolder}"
+    ],
+    "files.associations": {
+        "time.h": "c",
+        "unistd.h": "c",
+        "nrf.h": "c"
+    }
+}
