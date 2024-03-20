@@ -4,4 +4,6 @@ find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 
 project(pdmtest)
 
-target_sources(app PRIVATE src/main.c src/pdmcfg.s)
+target_sources(app PRIVATE 
+               src/main.c 
+           )

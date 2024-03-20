@@ -25,7 +25,14 @@ enum PDM_RATIO{
  * 0 for ratio 64
  * 1 for ratio 80
  * */
-extern void set_pdm_ratio(enum PDM_RATIO);
+void set_pdm_ratio(enum PDM_RATIO ratio){
+    /* 0x50026520 PDM_RATIO register address */
+    __asm__ volatile("ldr r1, =0x50026520\n\t"
+                     "str %0, [r1]\n\t"
+                      :
+                      : "r" (ratio));
+
+}
 
 
 K_SEM_DEFINE(data_ready, 0, 1);
@@ -44,12 +51,6 @@ void dump_buffer(uint16_t *buff, size_t len){
 
 }
 
-
-/*void read_samples(int16_t *buff, size_t len){
-    nrfx_pdm_stop();
-    dump_buffer(buff, len);
-    k_sem_give(&data_ready);
-}*/
 
 /* Event handler for pdm events
  * will be called on:
@@ -90,6 +91,7 @@ int main(){
     pdm_cfg.clock_freq  = NRF_PDM_FREQ_1280K;
 
     nrfx_pdm_init(&pdm_cfg, pdm_evt_handler);
+    // This *MUST* be called after nrfx_pdm_init or configuration will be overwritten
     set_pdm_ratio(PDM_RATIO80);
 
     for(;;){
