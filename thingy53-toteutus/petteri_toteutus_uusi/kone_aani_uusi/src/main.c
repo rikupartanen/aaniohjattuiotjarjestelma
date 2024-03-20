@@ -5,8 +5,8 @@
  */
 
 /*
-PDM address for microphone Thingy:53 are 0x50026000 to 0x40026000
-Easydma register is SAMPLE.PTR.
+SAMPLE.PTR 0x560 RAM address pointer to write samples to with EasyDMA
+SAMPLE.MAXCNT 0x564 Number of samples to allocate memory for in EasyDMA mode
 VM3011 is microphones type in Thingy:53.
 Dataline for microphone is P0.27 DIN
 Data out line is P0.25 OUT
@@ -21,20 +21,35 @@ Data out line is P0.25 OUT
 #include <nrfx.h>
 
 
+#include <stdlib.h>
+#include <stdint.h>
+
+#include <zephyr/logging/log.h>
+#include <zephyr/audio/dmic.h>
+
 
 //PDM setuping dma
 int din_pin_out = 27, clk_pin_out = 25; //PDM microphone pinout
 
-double audio_data = 0.0; //Output microphone data for print
+int16_t audio_data_buffer[255];  //Output microphone data for print
+
 
 #define NRFX_PDM_MAX_BUFFER_SIZE 32767 //PDM buffer size
 
-#define NRFX_PDM_DEFAULT_CONFIG(test, test2) //Port configure for PDM
+#define NRFX_PDM_DEFAULT_CONFIG(din_pin_out, clk_pin_out) //Port configure for PDM
 
 
-//Easy dma memory buffer
-#define READERBUFFER_SIZE 255 //Easydma buffer
 
+#define AUDIO_SAMPLE_RATE       16000
+#define AUDIO_SAMPLE_SIZE       (sizeof(int16_t))
+#define AUDIO_BLOCK_SIZE        (AUDIO_SAMPLE_RATE * AUDIO_SAMPLE_SIZE)
+
+
+
+static int16_t *g_buff;
+
+
+K_SEM_DEFINE(data_ready, 0, 1);
 
 
 
@@ -44,12 +59,14 @@ int main(void)
 
 	setup_pdm_audio(); //Setuping pdm audio
 
-	while(-1) //Infinite loop for printing audio value
-	{
 
-		//Get data and print it		
-		printf("Audio value is %f\n", audio_data);
-		k_msleep(20); //Delay for print
+	while(-1) //Infinite loop for printing audio data
+	{
+		k_sem_take(&data_ready, K_FOREVER);
+        dump_buffer(g_buff, AUDIO_BLOCK_SIZE);
+		
+
+		//k_msleep(20); //Delay for print
 
 	}
 
@@ -58,8 +75,39 @@ int main(void)
 
 
 
-void test_data_plc(nrfx_pdm_evt_t const *p_evt){
+void event_handler(nrfx_pdm_evt_t const *pla_event){
 
+	if(pla_event->error != NRFX_PDM_NO_ERROR){
+        LOG_ERR("PDM Overflow error %d", pla_event->error);
+        return;
+    }
+
+	if(pla_event->buffer_requested){
+        // We should have a valid buffer already but might as well check here too 
+        if(g_buff == NULL){
+            LOG_ERR("Malloc failed for audio buffer %p", g_buff);
+            return;
+        }
+        nrfx_pdm_buffer_set(g_buff, (AUDIO_BLOCK_SIZE / AUDIO_SAMPLE_SIZE));
+    }
+
+    if(pla_event->buffer_released != NULL){
+        k_sem_give(&data_ready);
+    }
+	
+
+}
+
+
+
+void dump_buffer(uint16_t *buff, size_t len){
+    printf("\n*** START OF BUFFER DUMP ***\n");
+    for(size_t i = 0; i < len / sizeof(uint16_t); ++i){
+        if(i % 8 == 0){ putchar('\n'); }
+        printf("%04x ", buff[i]);
+    }
+    
+    printf("\n\n*** END OF BUFFER DUMP ***\n\n");
 
 }
 
@@ -67,10 +115,11 @@ void test_data_plc(nrfx_pdm_evt_t const *p_evt){
 
 void setup_pdm_audio()
 {
+	//Default gain 
+	uint8_t defaultgain = 10;
 	
-	uint8_t gain_setup_left_right = 200; //Gain setting for pdm
+	uint8_t gain_setup_left_right = (defaultgain - (2 * 3)); //Gain calculation for program
 	nrfx_pdm_config_t pdm_config_init = {		
-
 
 		.mode = NRF_PDM_MODE_MONO, //Mono or stereo mode
 
@@ -94,17 +143,10 @@ void setup_pdm_audio()
 
 	};
 
-	nrfx_pdm_evt_t PDM_event_handl = {
-
-		.buffer_released = NULL,
-		.buffer_requested = 6554,
-		.error = NRFX_PDM_NO_ERROR,
-
-	};
 	
-	nrfx_pdm_init(&pdm_config_init, test_data_plc); //Initalize setup to PDM
-
-
+	
+	nrfx_pdm_init(&pdm_config_init, event_handler); //Initalize setup to PDM
+	
 	nrfx_pdm_start(); //Starting pdm sending
 	
 }
