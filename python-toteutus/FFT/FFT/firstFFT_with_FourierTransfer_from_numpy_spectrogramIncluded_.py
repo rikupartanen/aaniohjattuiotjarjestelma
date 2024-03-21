@@ -42,7 +42,7 @@ for i in range(len(windows)):
 
 #The part where the Fourier transform is applied 
 
-get_amplitude = [] #The answer of the Fourier transfrom which consists of complex number, but we could get hte answer by , se we need to get the magnitude of each frequency to display it on the graph as as spectrogram, which will be sotred 
+get_amplitude = [] #The answer of the Fourier transfrom which includes a complex part
 
 for window in windows: 
     fft_result  = np.fft.fft(window)   #the next step of the project is to develop a custom fft function instead of utilizing the already existing one 
