@@ -46,11 +46,14 @@ LOG_MODULE_REGISTER(pdmtest, LOG_LEVEL_DBG);
 #define PDM_CLK_FREQ    NRF_PDM_FREQ_1280K;
 #define PDM_RATIO       PDM_RATIO80
 
-/* How many buffers we want 
+/* How many buffers (seconds) we want to record. 
+ * N_BUFF * 2 = seconds
+ *
  * nrfx_pdm_buffer_set() only allows buffer buffer sizes <= 32767 words 
  * at a 16k sampling frequency, the most we can do per buffer
- * is about 2 seconds (64K) so >1 are required for longer periods */
-#define N_BUFF  2
+ * is about 2 seconds so >1 are required for longer periods 
+ * Out of memory occurs after around 12 seconds */
+#define N_BUFF  6 
 
 K_SEM_DEFINE(data_ready, 0, 1);
 
@@ -62,10 +65,8 @@ enum PDM_RATIO{
 
 static uint8_t g_buffsel = 0;
 static int16_t *g_buff[N_BUFF];
-static int16_t *g_buffready = NULL;
 
 static bool g_pdm_stopped = 0;
-
 
 /* Quick and (very) dirty solution to changing the PDM sampling ratio */
 void set_pdm_ratio(enum PDM_RATIO ratio){
@@ -76,17 +77,38 @@ void set_pdm_ratio(enum PDM_RATIO ratio){
                       : "r" (ratio));
 }
 
+/* Use to dump n amount of buffers */
+void dump_buffer_n(uint16_t *buff[], size_t len, size_t n){
+    printf("\n*** START OF BUFFER DUMP ***\n");
 
+    for(size_t i = 0; i < n; ++i){
+        for(size_t j = 0; j < len / sizeof(int16_t); ++j){
+            if(j % 8 == 0){ putchar('\n'); }
+            printf("%04x ", buff[i][j]);
+        }
+        putchar('\n');
+    }
+
+    printf("\n*** END OF BUFFER DUMP ***\n\n");
+
+}
+
+/* Used to dump a single buffer */
 void dump_buffer(uint16_t *buff, size_t len){
     printf("\n*** START OF BUFFER DUMP ***\n");
     for(size_t i = 0; i < len / sizeof(int16_t); ++i){
         if(i % 8 == 0){ putchar('\n'); }
         printf("%04x ", buff[i]);
     }
-    
+
     putchar('\n');
     printf("\n*** END OF BUFFER DUMP ***\n\n");
 
+}
+
+/* Simply switch to the next buffer unless we're already at the last buffer */
+static inline uint8_t switch_buffer(uint8_t cur){
+    return ( (cur + 1) >= N_BUFF ? 0 : (cur + 1) );
 }
 
 void pdm_stop(){
@@ -95,6 +117,7 @@ void pdm_stop(){
 }
 
 void pdm_start(){
+    g_buffsel = 0;
     nrfx_pdm_start();
     g_pdm_stopped = 0;
 }
@@ -106,30 +129,30 @@ void pdm_start(){
  * - buffer full*/
 void pdm_evt_handler(nrfx_pdm_evt_t const *p_evt){
 
-    /* Just log and exit on error */
+    /* Release whatever data we do have and stop on error */
     if(p_evt->error != NRFX_PDM_NO_ERROR){
         LOG_ERR("PDM Overflow error %d", p_evt->error);
+        pdm_stop(); 
+        k_sem_give(&data_ready);
         return;
     }
 
     if(p_evt->buffer_requested){
-        g_buffsel ^= 1;
         nrfx_pdm_buffer_set(g_buff[g_buffsel], (AUDIO_BLOCK_SIZE / AUDIO_SAMPLE_SIZE));
+        g_buffsel = switch_buffer(g_buffsel);
     }
 
     if(p_evt->buffer_released != NULL){
-        /* The event handler might be called once more
-         * after nrfx_pdm_stop() has been called and buffer_released will be set
-         * thus we end up giving an unnecessary data_ready.
-         * So we simply check if we've already stopped */
-        if(!g_pdm_stopped){ 
+        /* Only stop if we've reached the last buffer
+         * event handler might also be called once after stopping
+         * so make sure we haven't actually stopped before */
+        if(p_evt->buffer_released == g_buff[N_BUFF-1]  && !g_pdm_stopped){
             pdm_stop(); 
-            g_buffready = p_evt->buffer_released;
             k_sem_give(&data_ready);
         }
     }
-
 }
+
 
 void butt_handler(uint32_t state, uint32_t has_changed){
     if(state == 1){
@@ -145,12 +168,10 @@ int main(){
 
     nrfx_err_t ret = 0;
     ret = dk_buttons_init(butt_handler);
-
-        
     if(ret){
         LOG_ERR("Got err %d\n", ret);
     }
-    
+
 
     nrfx_pdm_config_t pdm_cfg = NRFX_PDM_DEFAULT_CONFIG(PDM_CLK, PDM_DIN);
     pdm_cfg.mode        = NRF_PDM_MODE_MONO;
@@ -165,9 +186,8 @@ int main(){
     set_pdm_ratio(PDM_RATIO);
 
     for(;;){
-
         k_sem_take(&data_ready, K_FOREVER);
-        dump_buffer(g_buffready, AUDIO_BLOCK_SIZE);
+        dump_buffer_n((uint16_t**)g_buff, AUDIO_BLOCK_SIZE, N_BUFF);
     }
 
     for(int i = 0; i < N_BUFF; ++i){
