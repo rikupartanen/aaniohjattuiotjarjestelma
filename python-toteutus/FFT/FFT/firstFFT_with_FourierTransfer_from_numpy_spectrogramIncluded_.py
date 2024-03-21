@@ -47,7 +47,7 @@ get_amplitude = [] #The answer of the Fourier transfrom which includes a complex
 for window in windows: 
     fft_result  = np.fft.fft(window)   #the next step of the project is to develop a custom fft function instead of utilizing the already existing one 
     magnitude = np.abs(fft_result)[:window_size//2]     #calculate the absoolute number of the FFT to show 
-    get_amplitude.append(magnitude)                     #basically has the answer of FFT as an absolute numbers 
+    get_amplitude.append(magnitude)                     #basically has the answer of FFT as an absolute number 
     
 
 
