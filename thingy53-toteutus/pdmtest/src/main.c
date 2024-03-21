@@ -4,6 +4,7 @@
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 #include <zephyr/audio/dmic.h>
+#include <dk_buttons_and_leds.h>
 #include <nrfx_pdm.h>
 
 LOG_MODULE_REGISTER(pdmtest, LOG_LEVEL_DBG);
@@ -11,6 +12,7 @@ LOG_MODULE_REGISTER(pdmtest, LOG_LEVEL_DBG);
 /* Pins for microphone */
 #define PDM_CLK     41  // P1.09 = 32 + 9
 #define PDM_DIN     27  // P0.27
+
 
 /* Audio sampling settings 
  * Note: as of now, there's no automated way for making sure AUDIO_SAMPLE_RATE 
@@ -45,12 +47,13 @@ LOG_MODULE_REGISTER(pdmtest, LOG_LEVEL_DBG);
 #define PDM_RATIO       PDM_RATIO80
 
 /* How many buffers we want 
- * nrfx_pdm_buffer_set() only allows buffer sizes that uint16_t can hold (65535) 
- * at a 16k sampling frequency, with 2 bytes required per sample the most we can do per buffer
+ * nrfx_pdm_buffer_set() only allows buffer buffer sizes <= 32767 words 
+ * at a 16k sampling frequency, the most we can do per buffer
  * is about 2 seconds (64K) so >1 are required for longer periods */
 #define N_BUFF  2
 
 K_SEM_DEFINE(data_ready, 0, 1);
+
 
 enum PDM_RATIO{
     PDM_RATIO64 = 0,
@@ -59,11 +62,14 @@ enum PDM_RATIO{
 
 static uint8_t g_buffsel = 0;
 static int16_t *g_buff[N_BUFF];
+static int16_t *g_buffready = NULL;
+
+static bool g_pdm_stopped = 0;
 
 
 /* Quick and (very) dirty solution to changing the PDM sampling ratio */
 void set_pdm_ratio(enum PDM_RATIO ratio){
-    /* 0x50026520 PDM_RATIO register address */
+    /* 0x50026520 PDM_RATIO register address for SECURE application */
     __asm__ volatile("ldr r1, =0x50026520\n\t"
                      "str %0, [r1]\n\t"
                       :
@@ -83,6 +89,15 @@ void dump_buffer(uint16_t *buff, size_t len){
 
 }
 
+void pdm_stop(){
+    nrfx_pdm_stop();
+    g_pdm_stopped = 1;
+}
+
+void pdm_start(){
+    nrfx_pdm_start();
+    g_pdm_stopped = 0;
+}
 
 /* Event handler for pdm events
  * will be called on:
@@ -98,18 +113,28 @@ void pdm_evt_handler(nrfx_pdm_evt_t const *p_evt){
     }
 
     if(p_evt->buffer_requested){
-        /* We should have a valid buffer already but might as well check here too */
-        if(g_buff[g_buffsel] == NULL){
-            LOG_ERR("Malloc failed for audio buffer %p", g_buff);
-            return;
-        }
+        g_buffsel ^= 1;
         nrfx_pdm_buffer_set(g_buff[g_buffsel], (AUDIO_BLOCK_SIZE / AUDIO_SAMPLE_SIZE));
     }
 
     if(p_evt->buffer_released != NULL){
-        k_sem_give(&data_ready);
+        /* The event handler might be called once more
+         * after nrfx_pdm_stop() has been called and buffer_released will be set
+         * thus we end up giving an unnecessary data_ready.
+         * So we simply check if we've already stopped */
+        if(!g_pdm_stopped){ 
+            pdm_stop(); 
+            g_buffready = p_evt->buffer_released;
+            k_sem_give(&data_ready);
+        }
     }
 
+}
+
+void butt_handler(uint32_t state, uint32_t has_changed){
+    if(state == 1){
+        pdm_start();
+    }
 }
 
 int main(){
@@ -118,26 +143,31 @@ int main(){
         g_buff[i] = calloc(AUDIO_BLOCK_SIZE, 1);
     }
 
+    nrfx_err_t ret = 0;
+    ret = dk_buttons_init(butt_handler);
+
+        
+    if(ret){
+        LOG_ERR("Got err %d\n", ret);
+    }
+    
+
     nrfx_pdm_config_t pdm_cfg = NRFX_PDM_DEFAULT_CONFIG(PDM_CLK, PDM_DIN);
     pdm_cfg.mode        = NRF_PDM_MODE_MONO;
     pdm_cfg.edge        = NRF_PDM_EDGE_LEFTFALLING;
     pdm_cfg.gain_l      = NRF_PDM_GAIN_MAXIMUM;
+    pdm_cfg.gain_r      = NRF_PDM_GAIN_MAXIMUM;
 
     pdm_cfg.clock_freq  = PDM_CLK_FREQ;
 
     nrfx_pdm_init(&pdm_cfg, pdm_evt_handler);
     /* This *MUST* be called after nrfx_pdm_init or configuration will be overwritten */
     set_pdm_ratio(PDM_RATIO);
-    nrfx_pdm_start();
 
     for(;;){
-        k_msleep(5000);
-
 
         k_sem_take(&data_ready, K_FOREVER);
-        dump_buffer(g_buff[g_buffsel], AUDIO_BLOCK_SIZE);
-        /* TODO: change this if we're using more than 2 */
-        g_buffsel ^= 1;
+        dump_buffer(g_buffready, AUDIO_BLOCK_SIZE);
     }
 
     for(int i = 0; i < N_BUFF; ++i){
