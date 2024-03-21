@@ -16,28 +16,24 @@ LOG_MODULE_REGISTER(pdmtest, LOG_LEVEL_DBG);
 #define AUDIO_BLOCK_SIZE        ((AUDIO_SAMPLE_RATE * AUDIO_SAMPLE_SIZE) * 2)
 
 
+K_SEM_DEFINE(data_ready, 0, 1);
+
 enum PDM_RATIO{
     PDM_RATIO64 = 0,
     PDM_RATIO80 = 1,
 };
 
-/* Set ratio for PDMCLK / ratio 
- * 0 for ratio 64
- * 1 for ratio 80
- * */
+static int16_t *g_buff;
+
+
 void set_pdm_ratio(enum PDM_RATIO ratio){
     /* 0x50026520 PDM_RATIO register address */
     __asm__ volatile("ldr r1, =0x50026520\n\t"
                      "str %0, [r1]\n\t"
                       :
                       : "r" (ratio));
-
 }
 
-
-K_SEM_DEFINE(data_ready, 0, 1);
-
-static int16_t *g_buff;
 
 void dump_buffer(uint16_t *buff, size_t len){
     printf("\n*** START OF BUFFER DUMP ***\n");
