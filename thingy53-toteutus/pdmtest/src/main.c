@@ -22,6 +22,9 @@ LOG_MODULE_REGISTER(pdmtest, LOG_LEVEL_DBG);
 #define AUDIO_SAMPLE_SIZE       (sizeof(int16_t))
 #define AUDIO_BLOCK_SIZE        ((AUDIO_SAMPLE_RATE * AUDIO_SAMPLE_SIZE) * 2)
 
+/* How much to amplify the recorded samples by */
+#define PCM_AMP 100
+
 /* Set clock frequency and ratio. 
  * These need to produce the desired sample rate = (PDM_CLK_FREQ / PDM_RATIO)
  *
@@ -70,7 +73,9 @@ static bool g_pdm_stopped = 0;
 
 /* Quick and (very) dirty solution to changing the PDM sampling ratio */
 void set_pdm_ratio(enum PDM_RATIO ratio){
-    /* 0x50026520 PDM_RATIO register address for SECURE application */
+    /* 0x50026520 PDM_RATIO register address for SECURE application 
+     * If bit 0 is set, ratio will be 80.
+     * If bit 0 is unset, ratio will be 64.*/
     __asm__ volatile("ldr r1, =0x50026520\n\t"
                      "str %0, [r1]\n\t"
                       :
@@ -105,6 +110,32 @@ void dump_buffer(uint16_t *buff, size_t len){
     printf("\n*** END OF BUFFER DUMP ***\n\n");
 
 }
+
+void pcm_amp(int16_t *samples, size_t len, float mult){
+    int16_t largest = samples[0];
+    
+    /* Find the largest absolute value */
+    for(size_t i = 0; i < len; ++i){
+        /* make sure we don't overflow on abs() */
+        if(samples[i] == INT16_MIN){
+            samples[i]++;
+        }
+        if( (abs(samples[i])) > largest ){
+            largest = samples[i];
+        }
+    }
+
+    float highestmult = (float)INT16_MAX / largest;
+
+    if(mult > highestmult){
+        mult = highestmult;
+    }
+
+    for(size_t i = 0; i < len; ++i){
+        samples[i] = (int16_t)(samples[i] * mult);
+    }
+}
+
 
 /* Simply switch to the next buffer unless we're already at the last buffer */
 static inline uint8_t switch_buffer(uint8_t cur){
@@ -177,7 +208,6 @@ int main(){
     pdm_cfg.mode        = NRF_PDM_MODE_MONO;
     pdm_cfg.edge        = NRF_PDM_EDGE_LEFTFALLING;
     pdm_cfg.gain_l      = NRF_PDM_GAIN_MAXIMUM;
-    pdm_cfg.gain_r      = NRF_PDM_GAIN_MAXIMUM;
 
     pdm_cfg.clock_freq  = PDM_CLK_FREQ;
 
@@ -187,6 +217,9 @@ int main(){
 
     for(;;){
         k_sem_take(&data_ready, K_FOREVER);
+        for(size_t i = 0; i < N_BUFF; ++i){
+            pcm_amp(g_buff[i], AUDIO_BLOCK_SIZE, PCM_AMP);
+        }
         dump_buffer_n((uint16_t**)g_buff, AUDIO_BLOCK_SIZE, N_BUFF);
     }
 
