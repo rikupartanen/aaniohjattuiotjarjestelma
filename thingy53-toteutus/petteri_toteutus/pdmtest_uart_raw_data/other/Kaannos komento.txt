@@ -1,0 +1,5 @@
+thingy53_nrf5340_cpunet
+
+
+-- runners.nrfjprog: Flashing file: C:\nordic_crap\thingy53\muiden_koodit\Uudempi_koodi\build\zephyr\merged_domains.hex
+-- runners.nrfjprog: C:\nordic_crap\thingy53\muiden_koodit\Uudempi_koodi\build\zephyr\merged_domains.hex targets both nRF53 coprocessors; splitting it into: C:\nordic_crap\thingy53\muiden_koodit\Uudempi_koodi\build\zephyr\GENERATED_CP_NETWORK_merged_domains.hex and C:\nordic_crap\thingy53\muiden_koodit\Uudempi_koodi\build\zephyr\GENERATED_CP_APPLICATION_merged_domains.hex
