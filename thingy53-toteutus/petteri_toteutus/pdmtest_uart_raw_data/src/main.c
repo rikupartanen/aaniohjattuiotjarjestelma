@@ -199,28 +199,18 @@ void butt_handler(uint32_t state, uint32_t has_changed){
 }
 
 
-void serial_data_device_conf(){
-   
+void serial_uart_setup(){
 
-
-   struct device_state device_sta = {
-    .init_res = 0,
-    .initialized = true,
-
-   };
-
-    struct device data = {
+    struct device data_uart = {
         .name = "Uart test",
-        .config = UART_address,
-        .state = device_sta,
-        
+        .config = NULL,
+        .api = NULL, //Must be NULL not used
+        .data = 0x50026000,
+        .state = NULL,
     };
 
-}
-
-void serial_uart_setup(){
     
-    const struct uart_config uart_conf = {
+    struct uart_config uart_conf = {
         .baudrate = 115200,
         .parity = UART_CFG_PARITY_NONE,
         .stop_bits = UART_CFG_STOP_BITS_1,
@@ -229,7 +219,7 @@ void serial_uart_setup(){
 
     };
 
-    uart_configure(data, uart_conf);
+    uart_configure(&data_uart, &uart_conf);
 
 }
 
