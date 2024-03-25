@@ -34,8 +34,20 @@ class DummyLayer(Layer):
     def call(self, inputs):
         return inputs
 
+
 def get_reference_layer(layer: str, model: Model):
-    """Split the model to three parts start, layer and rest"""
+    """Split the model in to three parts start, layer and rest.
+
+    Example:
+    ```python
+    model = import_model("../model/test_model.keras")
+    (start, layer, end) = get_reference_layer("dense", model)
+
+    result = start(waveform)
+    layer_result = layer(result)
+    print(layer_result)
+    ```
+    """
     modelStart = models.Sequential()
     selectedLayer: Layer
     modelEnd = models.Sequential()
@@ -81,11 +93,16 @@ if __name__ == "__main__":
         print("No model file specified")
         exit(-1)
 
+    # Example of geting reference layer
+    # Argv should hold model path, can be replaced by string
     model = import_model(sys.argv[1])
-    test = get_reference_layer("resizing", model)
-    (start, layer, end) = test
+    (start, layer, end) = get_reference_layer("resizing", model)
 
     print("Original input", model.input_shape)
     print("Start input", start.input_shape)
     print("Layer input", layer.input.shape)
     print("End input", end.input_shape)
+
+    # To use the model parts, call the part with the input data
+    # result = start(waveform)
+    # layer_result = layer(result)
