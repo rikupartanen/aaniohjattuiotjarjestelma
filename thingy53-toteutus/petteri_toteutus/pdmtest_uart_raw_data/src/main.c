@@ -86,6 +86,7 @@ void set_pdm_ratio(enum PDM_RATIO ratio){
 
 
 //Configure for UART
+#define UART_PRINT
 const struct device * uart_data_print = DEVICE_DT_GET(DT_NODELABEL(uart0));
 uint8_t *uart_buf;
 size_t buf_len = sizeof(size_t);
@@ -217,16 +218,16 @@ void serial_uart_setup(){ //Setuping UART to work
         .flow_ctrl = UART_CFG_FLOW_CTRL_NONE,
     };
 
-
     uart_configure(uart_data_print, &uart_conf);
     uart_rx_enable(uart_data_print,*uart_buf,buf_len,timeout_time);
 
 }
 
 
-void serial_uart_print(){ //Printing serial data to UART
-    char test_data;
-    uart_poll_in(uart_data_print,test_data);
+void serial_uart_print(uint16_t show_data){ //Printing serial data to UART
+
+
+    uart_poll_in(uart_data_print,show_data);
     
 }   
 
@@ -263,6 +264,11 @@ int main(){
         for(size_t i = 0; i < N_BUFF; ++i){
             pcm_amp(g_buff[i], AUDIO_BLOCK_SIZE, PCM_AMP);
         }
+
+        #ifdef UART_PRINT
+        serial_uart_print(g_buff); //Print serial data in UART
+        #endif
+
         dump_buffer_n((uint16_t**)g_buff, AUDIO_BLOCK_SIZE, N_BUFF);
     }
 
