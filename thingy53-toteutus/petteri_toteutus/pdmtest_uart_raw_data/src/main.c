@@ -87,7 +87,9 @@ void set_pdm_ratio(enum PDM_RATIO ratio){
 
 //Configure for UART
 const struct device * uart_data_print = DEVICE_DT_GET(DT_NODELABEL(uart0));
-
+uint8_t *uart_buf;
+size_t buf_len = sizeof(size_t);
+int32_t timeout_time = 2000;
 //Configure for UART ends
 
 
@@ -215,8 +217,9 @@ void serial_uart_setup(){ //Setuping UART to work
         .flow_ctrl = UART_CFG_FLOW_CTRL_NONE,
     };
 
+
     uart_configure(uart_data_print, &uart_conf);
-    
+    uart_rx_enable(uart_data_print,*uart_buf,buf_len,timeout_time);
 
 }
 
