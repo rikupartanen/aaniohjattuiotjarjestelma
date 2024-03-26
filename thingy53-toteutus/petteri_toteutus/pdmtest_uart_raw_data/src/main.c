@@ -9,9 +9,9 @@
 #include <zephyr/drivers/uart.h>
 #include <zephyr/device.h>
 
-
 //Configure of UART
 int UART_address = 5;
+const struct device *data_uart = DEVICE_DT_GET(DT_NODELABEL(uart0_default));
 
 //UART Configure ends
 
@@ -199,35 +199,34 @@ void butt_handler(uint32_t state, uint32_t has_changed){
 }
 
 
+
+
+
+
 void serial_uart_setup(){
 
-    struct device data_uart = {
-        .name = "Uart test",
-        .config = NULL,
-        .api = NULL, //Must be NULL not used
-        .data = 0x50026000,
-        .state = NULL,
-    };
+    if (!device_is_ready(data_uart)) {
+        return;
+    }
 
-    
-    struct uart_config uart_conf = {
+    const struct uart_config uart_conf = {
         .baudrate = 115200,
         .parity = UART_CFG_PARITY_NONE,
         .stop_bits = UART_CFG_STOP_BITS_1,
         .data_bits = UART_CFG_DATA_BITS_8,
         .flow_ctrl = UART_CFG_FLOW_CTRL_RTS_CTS,
-
     };
 
-    uart_configure(&data_uart, &uart_conf);
+    uart_configure(data_uart, &uart_conf);
 
 }
 
 
 void serial_uart_print(){
-
-
-}
+    char test_data;
+    uart_poll_in(data_uart,test_data);
+    
+}   
 
 
 int main(){
