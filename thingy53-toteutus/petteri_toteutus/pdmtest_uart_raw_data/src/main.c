@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdint.h>
-
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 #include <zephyr/audio/dmic.h>
@@ -9,11 +8,7 @@
 #include <zephyr/drivers/uart.h>
 #include <zephyr/device.h>
 
-//Configure of UART
-int UART_address = 5;
-const struct device *data_uart = DEVICE_DT_GET(DT_NODELABEL(uart0_default));
 
-//UART Configure ends
 
 LOG_MODULE_REGISTER(pdmtest, LOG_LEVEL_DBG);
 
@@ -88,6 +83,13 @@ void set_pdm_ratio(enum PDM_RATIO ratio){
                       :
                       : "r" (ratio));
 }
+
+
+//Configure for UART
+const struct device * uart_data_print = DEVICE_DT_GET(DT_NODELABEL(uart0));
+
+//Configure for UART ends
+
 
 /* Use to dump n amount of buffers */
 void dump_buffer_n(uint16_t *buff[], size_t len, size_t n){
@@ -199,13 +201,9 @@ void butt_handler(uint32_t state, uint32_t has_changed){
 }
 
 
+void serial_uart_setup(){ //Setuping UART to work
 
-
-
-
-void serial_uart_setup(){
-
-    if (!device_is_ready(data_uart)) {
+  if (!device_is_ready(uart_data_print)) {
         return;
     }
 
@@ -214,22 +212,26 @@ void serial_uart_setup(){
         .parity = UART_CFG_PARITY_NONE,
         .stop_bits = UART_CFG_STOP_BITS_1,
         .data_bits = UART_CFG_DATA_BITS_8,
-        .flow_ctrl = UART_CFG_FLOW_CTRL_RTS_CTS,
+        .flow_ctrl = UART_CFG_FLOW_CTRL_NONE,
     };
 
-    uart_configure(data_uart, &uart_conf);
+    uart_configure(uart_data_print, &uart_conf);
+    
 
 }
 
 
-void serial_uart_print(){
+void serial_uart_print(){ //Printing serial data to UART
     char test_data;
-    uart_poll_in(data_uart,test_data);
+    uart_poll_in(uart_data_print,test_data);
     
 }   
 
 
 int main(){
+
+    serial_uart_setup(); //Uart setup running
+
     /* TODO: see if this can be preallocated as a slab, this is a bit dirty */
     for(int i = 0; i < N_BUFF; ++i){
         g_buff[i] = calloc(AUDIO_BLOCK_SIZE, 1);
