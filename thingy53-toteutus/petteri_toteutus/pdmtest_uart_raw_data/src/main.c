@@ -7,7 +7,7 @@
 #include <nrfx_pdm.h>
 #include <zephyr/drivers/uart.h>
 #include <zephyr/device.h>
-
+#include <zephyr/drivers/uart.h>
 
 
 LOG_MODULE_REGISTER(pdmtest, LOG_LEVEL_DBG);
@@ -88,9 +88,8 @@ void set_pdm_ratio(enum PDM_RATIO ratio){
 //Configure for UART
 #define UART_PRINT //Defined if used UART
 const struct device * uart_data_print = DEVICE_DT_GET(DT_NODELABEL(uart0));
-uint8_t *uart_buf;
-size_t buf_len = sizeof(size_t);
-int32_t timeout_time = 2000;
+size_t uart_buf_len = sizeof(uint8_t);
+uint8_t uart_buf[255];
 //Configure for UART ends
 
 
@@ -204,6 +203,21 @@ void butt_handler(uint32_t state, uint32_t has_changed){
 }
 
 
+void uart_evt_handler(){
+    
+    
+    struct uart_event_rx uart_evt_read = {
+        .buf = uart_buf,
+        .len = uart_buf_len,
+        .offset = 200,
+    }; 
+    
+
+
+}
+
+
+
 void serial_uart_setup(){ //Setuping UART to work
 
   if (!device_is_ready(uart_data_print)) {
@@ -218,11 +232,19 @@ void serial_uart_setup(){ //Setuping UART to work
         .flow_ctrl = UART_CFG_FLOW_CTRL_NONE,
     };
 
-    uart_configure(uart_data_print, &uart_conf); //Configure UART
-    uart_rx_enable(uart_data_print,*uart_buf,buf_len,timeout_time); //Enabling UART receiver
+    //typedef void (*uart_callback_t)(uart_data_print, struct uart_event *evt, void *uart_evt_handler);
 
-    int error_uart = uart_err_check(uart_data_print);
-    printf("UART Error check %d", error_uart);
+    uart_configure(uart_data_print, &uart_conf); //Configure UART
+
+    uart_callback_set(uart_data_print,uart_evt_handler,uart_buf);
+
+    //This part of code brokens code for working
+    int error_uart_print = uart_rx_enable(uart_data_print,uart_buf,uart_buf_len,SYS_FOREVER_US); //Enabling UART receiver
+    LOG_ERR("UART RX error check %d\n", error_uart_print);
+
+    int error_uart = uart_err_check(uart_data_print); //Errors in code
+
+    LOG_ERR("UART Error check %d\n", error_uart);
 
 }
 
@@ -258,8 +280,11 @@ int main(){
     pdm_cfg.mode        = NRF_PDM_MODE_MONO;
     pdm_cfg.edge        = NRF_PDM_EDGE_LEFTFALLING;
     pdm_cfg.gain_l      = NRF_PDM_GAIN_MAXIMUM;
-
+    pdm_cfg.gain_r      = NRF_PDM_GAIN_MAXIMUM;
     pdm_cfg.clock_freq  = PDM_CLK_FREQ;
+    pdm_cfg.skip_gpio_cfg = false;
+    pdm_cfg.skip_psel_cfg = false;
+
 
     nrfx_pdm_init(&pdm_cfg, pdm_evt_handler);
     /* This *MUST* be called after nrfx_pdm_init or configuration will be overwritten */
@@ -272,7 +297,7 @@ int main(){
             pcm_amp(g_buff[i], AUDIO_BLOCK_SIZE, PCM_AMP);
         }
 
-        #ifdef UARt
+        #ifdef UART_PRINT
         //serial_uart_print(g_buff); //Print serial data in UART
         #endif
     
