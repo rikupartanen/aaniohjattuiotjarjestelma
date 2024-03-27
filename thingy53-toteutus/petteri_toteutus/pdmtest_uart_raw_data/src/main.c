@@ -88,7 +88,7 @@ void set_pdm_ratio(enum PDM_RATIO ratio){
 //Configure for UART
 #define UART_PRINT //Defined if used UART
 const struct device * uart_data_print = DEVICE_DT_GET(DT_NODELABEL(uart0));
-size_t uart_buf_len = sizeof(uint8_t);
+size_t uart_buf_len = sizeof(uint8_t) * 255;
 uint8_t uart_buf[255];
 //Configure for UART ends
 
@@ -203,6 +203,8 @@ void butt_handler(uint32_t state, uint32_t has_changed){
 }
 
 
+
+
 void uart_evt_handler(){
     
     
@@ -232,19 +234,26 @@ void serial_uart_setup(){ //Setuping UART to work
         .flow_ctrl = UART_CFG_FLOW_CTRL_NONE,
     };
 
-    //typedef void (*uart_callback_t)(uart_data_print, struct uart_event *evt, void *uart_evt_handler);
 
     uart_configure(uart_data_print, &uart_conf); //Configure UART
+    uart_irq_rx_enable(uart_data_print); //Rx interrup enabled
+
 
     uart_callback_set(uart_data_print,uart_evt_handler,uart_buf);
 
     //This part of code brokens code for working
-    int error_uart_print = uart_rx_enable(uart_data_print,uart_buf,uart_buf_len,SYS_FOREVER_US); //Enabling UART receiver
-    LOG_ERR("UART RX error check %d\n", error_uart_print);
+   /*int error_uart_print = uart_rx_enable(uart_data_print,uart_buf,uart_buf_len,SYS_FOREVER_US); //Enabling UART receiver
+    LOG_ERR("UART RX error check %d\n", error_uart_print);*/ 
+
+    //uart_rx_enable(uart_data_print,uart_buf,uart_buf_len,SYS_FOREVER_US); //Enabling UART receiver
 
     int error_uart = uart_err_check(uart_data_print); //Errors in code
 
     LOG_ERR("UART Error check %d\n", error_uart);
+
+    int uart_po_in = uart_poll_in(uart_data_print,uart_buf);
+
+    LOG_ERR("UART receive data %d\n", uart_poll_in);
 
 }
 
