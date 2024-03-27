@@ -1,0 +1,608 @@
+[2024-Mar-27 11:02:30] [debug] --------------------------------------------------------------------------------
+[2024-Mar-27 11:02:30] [debug] C:\Program Files\Nordic Semiconductor\nrf-command-line-tools\bin\nrfjprog.exe --program C:\nordic_crap\thingy53\omat_koodit\pdmtest_uart_raw_data\build\zephyr\GENERATED_CP_NETWORK_merged_domains.hex --sectorerase --verify -f NRF53 --coprocessor CP_NETWORK --snr 801048781 --log 
+[2024-Mar-27 11:02:30] [debug] nrfjprog version 10.24.0 external
+[2024-Mar-27 11:02:30] [debug] --------------------------------------------------------------------------------
+[2024-Mar-27 11:02:30] [ info] Load library at C:\Program Files\Nordic Semiconductor\nrf-command-line-tools\bin\nrfjprog.dll.
+[2024-Mar-27 11:02:30] [ info] Library loaded, loading member functions.
+[2024-Mar-27 11:02:30] [ info] Member functions succesfully loaded.
+[2024-Mar-27 11:02:30] [debug] [ Client] - open
+[2024-Mar-27 11:02:30] [debug] [ Client] - start
+[2024-Mar-27 11:02:30] [ info] [ Client] - stdout: Jlinkarm nRF Worker ready. Handling sequence a2d2ced5-036f-4363-ae7e-60bbff46c20a.
+[2024-Mar-27 11:02:30] [trace] [ Client] - Command open executed for 72 milliseconds with result 0
+[2024-Mar-27 11:02:30] [debug] [ Client] - config
+[2024-Mar-27 11:02:30] [trace] [ Client] - Command config executed for 15 milliseconds with result 0
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Logger sink registered in Segger backend logger
+[2024-Mar-27 11:02:30] [debug] [ Client] - enum_emu_snr
+[2024-Mar-27 11:02:30] [debug] [  JLink] - Logger sink registered in JLink logger
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - open
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - just_check_family
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - open_dll
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - No J-Link DLL path was provided. Attempting to auto detect.
+[2024-Mar-27 11:02:30] [ info] [SeggerBackend] - Load library at C:\Program Files\SEGGER\JLink_V794e\JLink_x64.dll.
+[2024-Mar-27 11:02:30] [ info] [SeggerBackend] - Library loaded, loading member functions.
+[2024-Mar-27 11:02:30] [ info] [SeggerBackend] - Member functions succesfully loaded.
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Set batch mode
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - dll_version
+[2024-Mar-27 11:02:30] [ info] [SeggerBackend] - Segger dll version 7.94.e loaded.
+[2024-Mar-27 11:02:30] [trace] [ Worker] - Command open executed for 8 milliseconds with result 0
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - config
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - enum_emu_snr
+[2024-Mar-27 11:02:30] [trace] [ Worker] - Command config executed for 9 milliseconds with result 0
+[2024-Mar-27 11:02:30] [trace] [ Client] - Command enum_emu_con_info executed for 15 milliseconds with result 0
+[2024-Mar-27 11:02:30] [debug] [ Client] - connect_to_emu_with_snr
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - enum_emu_con_info
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_connected_to_emu
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - enum_emu_con_info
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_connected_to_emu
+[2024-Mar-27 11:02:30] [trace] [ Worker] - Command enum_emu_con_info executed for 5 milliseconds with result 0
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - connect_to_emu_with_snr
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_connected_to_emu
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - connect_to_emu_with_snr
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_connected_to_emu
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_enum_emu_snr
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_get_num_emus
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_connect_to_emu_with_snr
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_connect_to_emu_without_snr
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Segger logging enabled.
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Firmware: J-Link EDU Mini V1 compiled Dec 13 2023 14:36:33
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Firmware: J-Link EDU Mini V1 compiled Dec 13 2023 14:36:33
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Hardware: V1.00
+[2024-Mar-27 11:02:30] [trace] [  JLink] - S/N: 801048781
+[2024-Mar-27 11:02:30] [trace] [  JLink] - OEM: SEGGER
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Feature(s): FlashBP, GDB
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Bootloader: 2016 Nov 30
+[2024-Mar-27 11:02:30] [trace] [  JLink] - USB speed mode: Full speed (12 MBit/s)
+[2024-Mar-27 11:02:30] [trace] [  JLink] - TELNET listener socket opened on port 19021
+[2024-Mar-27 11:02:30] [trace] [  JLink] - WEBSRV WEBSRV_Init(): Starting webserver thread(s)
+[2024-Mar-27 11:02:30] [trace] [  JLink] - WEBSRV Webserver running on local port 19080
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Looking for J-Link GUI Server exe at: C:\Program Files\SEGGER\JLink_V794e\JLinkGUIServer.exe 
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Forking J-Link GUI Server: C:\Program Files\SEGGER\JLink_V794e\JLinkGUIServer.exe 
+[2024-Mar-27 11:02:30] [trace] [  JLink] - J-Link GUI Server info: "J-Link GUI server V7.94e " 
+[2024-Mar-27 11:02:30] [trace] [ Client] - Command connect_to_emu_with_snr executed for 127 milliseconds with result 0
+[2024-Mar-27 11:02:30] [debug] [ Client] - read_connected_emu_snr
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 73.021ms returns "O.K."  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_Lock()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_ExecCommand("SetRestartOnClose = 0", ...).   
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.002ms returns 0x01  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_ExecCommand("DisableFlashDL", ...).   
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.000ms returns 0x00  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_ExecCommand("ExcludeFlashCacheRange 0x0-0xFFFFFFFF", ...).   
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.006ms returns 0x00  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_SetHookUnsecureDialog  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_SetHookUnsecureDialog(...)
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.017ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_TIF_Select(JLINKARM_TIF_SWD)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 4.408ms returns 0x00  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_GetSpeedInfo()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - 96000000 Hz / n, n >= 24
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.021ms  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Connected emulator supports SWD speeds up to 4000kHz
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_SetSpeed(2000)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.024ms  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_GetSpeed()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.011ms returns 2000  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - SWD clock set to 2000kHz
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_GetSN()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.010ms returns 801048781  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.017ms  
+[2024-Mar-27 11:02:30] [trace] [ Client] - Command read_connected_emu_snr executed for 0 milliseconds with result 0
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - read_device_family
+[2024-Mar-27 11:02:30] [debug] [ Client] - enable_coprocessor
+[2024-Mar-27 11:02:30] [trace] [ Worker] - Command connect_to_emu_with_snr executed for 116 milliseconds with result 0
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - read_connected_emu_snr
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_connected_to_emu
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_IsOpen()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.019ms returns 0x01  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_Lock()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - read_connected_emu_snr
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.011ms  
+[2024-Mar-27 11:02:30] [trace] [ Worker] - Command read_connected_emu_snr executed for 0 milliseconds with result 0
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - enable_coprocessor
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_connected_to_emu
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_IsOpen()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.015ms returns 0x01  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_Lock()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_enable_coprocessor
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_secure_debug_available
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - coresight_configure
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_GetHWStatus(...)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.244ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_Configure()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.460ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - read_debug_port_idr
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - read_debug_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_debug_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_debug_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 255, DP Bank 0, AP Bank 255
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x00000000)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.958ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(DP reg 0x00)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x6BA02477
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.376ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_is_debug_region_powered
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_debug_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_debug_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(DP reg 0x01)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0xF0000040
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.974ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x00)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x43800042
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.319ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_readback_status
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x00)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x43800042
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.239ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Protection status for ahb-ap 0 read as NONE
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_get_secure_nonsecure_address
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - update_periph_secure_state
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_secure_debug_available
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x00)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x43800042
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.144ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Reading addr 0x50003814: secure state of peripheral from SPU @0x50003000 (S) (slave index 5).
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ahb_read_u32
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x00)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x43800042
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.060ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_write_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(AP reg 0x00, 0x03800042)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.088ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_write_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(AP reg 0x01, 0x50003814)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.090ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x03)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x80000012
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.109ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 0, DP Bank 0, AP Bank 15
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x000000F0)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.371ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x03)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x84770001
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.185ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Peripheral at address 0x50005614 has secure properties Selectable Secure
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_get_secure_nonsecure_address
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - update_periph_secure_state
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_secure_debug_available
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 0, DP Bank 0, AP Bank 0
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x00000000)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.339ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x00)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x03800042
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.986ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Reading addr 0x50003814: secure state of peripheral from SPU @0x50003000 (S) (slave index 5).
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ahb_read_u32
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x00)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x03800042
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.097ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_write_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(AP reg 0x00, 0x03800042)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.462ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_write_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(AP reg 0x01, 0x50003814)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.482ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x03)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x80000012
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.220ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 0, DP Bank 0, AP Bank 15
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x000000F0)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.387ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x03)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x84770001
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.276ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Peripheral at address 0x50005610 has secure properties Selectable Secure
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ahb_write_u32
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 0, DP Bank 0, AP Bank 0
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x00000000)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.390ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x00)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x03800042
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.594ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - CSW register read as 0x03800042
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_write_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(AP reg 0x00, 0x03800042)  
+[2024-Mar-27 11:02:30] [trace] [ Client] - Command enable_coprocessor executed for 45 milliseconds with result 0
+[2024-Mar-27 11:02:30] [debug] [ Client] - select_coprocessor
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.208ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [ Client] - Command select_coprocessor executed for 14 milliseconds with result 0
+[2024-Mar-27 11:02:30] [debug] [ Client] - read_device_info
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_write_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(AP reg 0x01, 0x50005614)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.074ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_write_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(AP reg 0x03, 0x00000000)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.067ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 0, DP Bank 0, AP Bank 15
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x000000F0)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.093ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x03)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x84770001
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.111ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ahb_write_u32
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 0, DP Bank 0, AP Bank 0
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x00000000)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.090ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x00)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x03800042
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.106ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - CSW register read as 0x03800042
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_write_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(AP reg 0x00, 0x03800042)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.088ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_write_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(AP reg 0x01, 0x50005610)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.338ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_write_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(AP reg 0x03, 0x00000000)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.375ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 0, DP Bank 0, AP Bank 15
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x000000F0)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.399ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x03)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x84770001
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.116ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.009ms  
+[2024-Mar-27 11:02:30] [trace] [ Worker] - Command enable_coprocessor executed for 45 milliseconds with result 0
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - select_coprocessor
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_connected_to_emu
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_IsOpen()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.016ms returns 0x01  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_Lock()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_connected_to_device
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_connected_to_device
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_IsConnected()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.014ms returns FALSE  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_select_coprocessor
+[2024-Mar-27 11:02:30] [ info] [  nRF53] - Loading new coprocessor data.
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_load_coprocessor_data
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - set_core_data
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Set core data:
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] -   Device ID: Cortex-M33
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] -   Expected core: 235012351
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] -   Existing Expected core: 235012351
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] -   Coprocessor: NETWORK
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] -   AHB AP index: 1
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] -   Core base address: 4294967295
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---set_coresight_ahb_ap_index
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_ExecCommand("CORESIGHT_SetIndexAHBAPToUse = 1", ...).   
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.004ms returns 0x00  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_ExecCommand("device = Cortex-M33", ...).   
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Device "CORTEX-M33" selected.
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Device "CORTEX-M33" selected.
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.798ms returns 0x00  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_readback_status
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_is_debug_region_powered
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_debug_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_debug_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 255, DP Bank 0, AP Bank 255
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x00000000)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.143ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(DP reg 0x01)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0xF0000040
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.988ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 1, DP Bank 0, AP Bank 0
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x01000000)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.342ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x00)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x43000002
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.237ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Protection status for ahb-ap 1 read as ALL
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.011ms  
+[2024-Mar-27 11:02:30] [trace] [ Worker] - Command select_coprocessor executed for 5 milliseconds with result 0
+[2024-Mar-27 11:02:30] [trace] [ Client] - Command read_device_info executed for 15 milliseconds with result 0
+[2024-Mar-27 11:02:30] [debug] [ Client] - read_memory_descriptors
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - read_device_info
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_connected_to_emu
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_IsOpen()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.012ms returns 0x01  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_Lock()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_read_device_version
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_is_debug_region_powered
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_debug_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_debug_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 255, DP Bank 0, AP Bank 255
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x00000000)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.421ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(DP reg 0x01)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0xF0000040
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.881ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 3, DP Bank 0, AP Bank 3
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x03000030)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.532ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x00)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x00000007
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.441ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x01)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x00000005
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.352ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_decode_device_version
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Device identified as NRF5340_xxAA_REV1
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.026ms  
+[2024-Mar-27 11:02:30] [trace] [ Worker] - Command read_device_info executed for 7 milliseconds with result 0
+[2024-Mar-27 11:02:30] [error] [ Client] - Encountered error -90: Command read_memory_descriptors executed for 15 milliseconds with result -90
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - read_memory_descriptors
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_connected_to_emu
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_IsOpen()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.012ms returns 0x01  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_Lock()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_read_memory_descriptors
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_readback_status
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_is_debug_region_powered
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_debug_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_debug_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 255, DP Bank 0, AP Bank 255
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x00000000)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.172ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(DP reg 0x01)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0xF0000040
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.098ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 1, DP Bank 0, AP Bank 0
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x01000000)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.825ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x00)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x43000002
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.131ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Protection status for ahb-ap 1 read as ALL
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.079ms  
+[2024-Mar-27 11:02:30] [error] [ Worker] - Can't read memory descriptors, ap-protection is enabled.
+[2024-Mar-27 11:02:30] [trace] [ Worker] - Command read_memory_descriptors executed for 4 milliseconds with result -90
+[2024-Mar-27 11:02:30] [debug] [ Client] - erase
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - erase_file
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_connected_to_emu
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_IsOpen()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.024ms returns 0x01  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_Lock()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - erase
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - init_device_info
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - update_memory_list
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_read_device_version
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_is_debug_region_powered
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_debug_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_debug_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 255, DP Bank 0, AP Bank 255
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x00000000)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.185ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(DP reg 0x01)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0xF0000040
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.089ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 3, DP Bank 0, AP Bank 3
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x03000030)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.094ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x00)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x00000007
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.990ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x01)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x00000005
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.233ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_decode_device_version
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Device identified as NRF5340_xxAA_REV1
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - read_device_info
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_read_device_version
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x00)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x00000007
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.200ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x01)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x00000005
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.358ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_decode_device_version
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Device identified as NRF5340_xxAA_REV1
+[2024-Mar-27 11:02:30] [ info] [  nRF53] - {"amountOfSteps":3,"description":"Erase file","duration":0,"message":"Check image","operation":"erase_image","progressPercentage":33,"step":1}
+[2024-Mar-27 11:02:30] [ info] [  nRF53] - Check memory ranges.
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - hex_file_is_valid
+[2024-Mar-27 11:02:30] [ info] [  nRF53] - {"amountOfSteps":7,"description":"Check image validity","duration":0,"message":"Initialize device info","operation":"confirm_image","progressPercentage":14,"step":1}
+[2024-Mar-27 11:02:30] [ info] [  nRF53] - {"amountOfSteps":7,"description":"Check image validity","duration":0,"message":"Check region 0 settings","operation":"confirm_image","progressPercentage":28,"step":2}
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - read_region_0_size_and_source.
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_read_region_0_size_and_source
+[2024-Mar-27 11:02:30] [ info] [  nRF53] - {"amountOfSteps":7,"description":"Check image validity","duration":0,"message":"block 1 of 5","operation":"confirm_image","progressPercentage":42,"step":3}
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - is_bprot_enabled
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_is_bprot_enabled
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Just_readback_status
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_access_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 1, DP Bank 0, AP Bank 0
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x01000000)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.091ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(AP reg 0x00)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x43000002
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.278ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - Protection status for ahb-ap 1 read as ALL
+[2024-Mar-27 11:02:30] [error] [  nRF53] - Failed while detecting device memory block protection status!
+[2024-Mar-27 11:02:30] [ info] [  nRF53] - {"amountOfSteps":0,"description":"Check image validity","message":"Failed while detecting device memory block protection status!","operation":"confirm_image","progressPercentage":0,"result":"fail","step":0}
+[2024-Mar-27 11:02:30] [error] [  nRF53] - Failed while erasing device. -90: Access protection is enabled, can't read block protection state.
+[2024-Mar-27 11:02:30] [ info] [  nRF53] - {"amountOfSteps":0,"description":"Erase file","message":"Failed while erasing device. -90: Access protection is enabled, can't read block protection state.","operation":"erase_image","progressPercentage":0,"result":"fail","step":0}
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.277ms  
+[2024-Mar-27 11:02:30] [error] [ Worker] - Access protection is enabled, can't read block protection state.
+[2024-Mar-27 11:02:30] [trace] [ Worker] - Command erase_file executed for 27 milliseconds with result -90
+[2024-Mar-27 11:02:30] [error] [ Client] - Encountered error -90: Command erase_file executed for 42 milliseconds with result -90
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - close
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_connected_to_emu
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_IsOpen()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.019ms returns 0x01  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_Lock()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - close
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - disconnect_from_emu
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_disconnect_from_emu
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - is_connected_to_device
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_is_debug_region_powered
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_debug_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_debug_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Select AP 255, DP Bank 0, AP Bank 255
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x02, 0x00000000)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.228ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(DP reg 0x01)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0xF0000040
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.283ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - unpower_debug_and_system_regions
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_write_debug_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_debug_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_WriteAPDPReg(DP reg 0x01, 0x00000000)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.197ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_is_debug_region_powered
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_read_debug_port_register
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - ---just_select_debug_port_register
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_CORESIGHT_ReadAPDPReg(DP reg 0x01)  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - Value=0x00000040
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 1.374ms returns 0  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_HasError()  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - - 0.007ms  
+[2024-Mar-27 11:02:30] [trace] [  JLink] - JLINK_Close()  
+[2024-Mar-27 11:02:30] [trace] [ Client] - Command close executed for 43 milliseconds with result 0
+[2024-Mar-27 11:02:30] [debug] [ Client] - terminate
+[2024-Mar-27 11:02:30] [trace] [ Client] - Command terminate executed for 0 milliseconds with result 0
+[2024-Mar-27 11:02:30] [debug] [SeggerBackend] - Segger Backend closed.
+[2024-Mar-27 11:02:30] [debug] [  nRF53] - nRF family DLL closed
+[2024-Mar-27 11:02:30] [trace] [ Worker] - Command close executed for 43 milliseconds with result 0
+[2024-Mar-27 11:02:31] [trace] [ Worker] - Command terminate executed for 0 milliseconds with result 0
+[2024-Mar-27 11:02:31] [trace] [ Worker] - Executed 12 commands for 269 milliseconds
+[2024-Mar-27 11:02:31] [debug] [ Client] - Worker process exited with code: 0
+[2024-Mar-27 11:02:31] [debug] [ Client] - Worker process exited with code: 0
+[2024-Mar-27 11:02:31] [debug] [ Client] - Child process terminated with result 0
+[2024-Mar-27 11:02:31] [trace] [ Client] - Executed 12 commands for 403 milliseconds
+[2024-Mar-27 11:02:31] [debug] [ Client] - terminate
