@@ -1,0 +1,24 @@
+{
+	"folders": [
+		{
+			"path": "../../../delete/hello_world_2"
+		},
+		{
+			"name": "pdmtest_uart_raw_data",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"typeinfo": "c",
+			"dmic.h": "c",
+			"kernel.h": "c",
+			"dk_buttons_and_leds.h": "c",
+			"uart.h": "c",
+			"device.h": "c",
+			"log.h": "c",
+			"nrfx_pdm.h": "c",
+			"compare": "c"
+		}
+	}
+}

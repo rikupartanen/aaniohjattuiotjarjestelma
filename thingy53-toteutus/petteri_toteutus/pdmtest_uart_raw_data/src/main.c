@@ -202,9 +202,7 @@ void butt_handler(uint32_t state, uint32_t has_changed){
     }
 }
 
-
-
-
+/*
 void uart_evt_handler(){
     
     
@@ -214,10 +212,8 @@ void uart_evt_handler(){
         .offset = 200,
     }; 
     
-
-
 }
-
+*/
 
 
 void serial_uart_setup(){ //Setuping UART to work
@@ -236,38 +232,24 @@ void serial_uart_setup(){ //Setuping UART to work
 
 
     uart_configure(uart_data_print, &uart_conf); //Configure UART
-    uart_irq_rx_enable(uart_data_print); //Rx interrup enabled
 
-
-    uart_callback_set(uart_data_print,uart_evt_handler,uart_buf);
-
-    //This part of code brokens code for working
-   /*int error_uart_print = uart_rx_enable(uart_data_print,uart_buf,uart_buf_len,SYS_FOREVER_US); //Enabling UART receiver
-    LOG_ERR("UART RX error check %d\n", error_uart_print);*/ 
-
-    //uart_rx_enable(uart_data_print,uart_buf,uart_buf_len,SYS_FOREVER_US); //Enabling UART receiver
 
     int error_uart = uart_err_check(uart_data_print); //Errors in code
 
     LOG_ERR("UART Error check %d\n", error_uart);
 
-    int uart_po_in = uart_poll_in(uart_data_print,uart_buf);
-
-    LOG_ERR("UART receive data %d\n", uart_poll_in);
-
 }
 
-/*
-void serial_uart_print(uint16_t show_data){ //Printing serial data to UART
 
-    for(int i; i < 50; i++){
-        uart_poll_in(uart_data_print,show_data);
-        
+void serial_uart_print(uint16_t *show_data, size_t len){ //Printing serial data to UART
+
+    LOG_ERR("show_data function: %d. buffer_lenght: %d.\n",*show_data,len);
+    for(int i = 0; i < len; i++){
+        uart_poll_out_u16(uart_data_print,show_data[i]);
     }
-    
 } 
 
-*/
+
 
 int main(){
 
@@ -307,10 +289,10 @@ int main(){
         }
 
         #ifdef UART_PRINT
-        //serial_uart_print(g_buff); //Print serial data in UART
-        #endif
-    
+        serial_uart_print(g_buff[uart_buf_len],uart_buf_len); //Print serial data in UART
+        #else
         dump_buffer_n((uint16_t**)g_buff, AUDIO_BLOCK_SIZE, N_BUFF);
+        #endif
     }
 
     for(int i = 0; i < N_BUFF; ++i){
