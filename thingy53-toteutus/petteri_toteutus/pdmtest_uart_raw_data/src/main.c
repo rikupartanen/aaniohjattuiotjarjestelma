@@ -7,7 +7,6 @@
 #include <nrfx_pdm.h>
 #include <zephyr/drivers/uart.h>
 #include <zephyr/device.h>
-#include <zephyr/drivers/uart.h>
 
 
 LOG_MODULE_REGISTER(pdmtest, LOG_LEVEL_DBG);
