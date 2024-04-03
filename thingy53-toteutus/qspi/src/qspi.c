@@ -1,6 +1,6 @@
-#include <stdio.h>
 #include <zephyr/kernel.h>
 #include <zephyr/drivers/flash.h>
+#include <stdint.h>
 #include <nrfx_qspi.h>
 
 #include "qspi.h"
@@ -16,6 +16,7 @@
 /* Assembly functions */
 extern void _qspi_configure(void);
 extern void _qspi_activate(void);
+extern void _qspi_deactivate(void);
 extern void _qspi_write(uint32_t *tx_buff, size_t tx_len, uint32_t dst);
 extern void _qspi_read(uint32_t *rx_buff, size_t rx_len, uint32_t src);
 extern void _qspi_erase(uint32_t start, enum erase_len len);
@@ -79,20 +80,8 @@ void qspi_deactivate(){
 }
 
 
-/* Configure and activate QSPI driver */
+/* Configure and activate QSPI peripheral */
 void qspi_init(){
     _qspi_configure();
     _qspi_activate();
-}
-
-
-int main(void){	
-    uint32_t read_data = 0;
-    qspi_read(&read_data, sizeof(read_data), 0x0);
-
-    /* Sleep is required for printk() to read correct data */
-    k_msleep(100);
-    printk("Value of read_data: %x\n", read_data);
-
-    return 0;
 }
