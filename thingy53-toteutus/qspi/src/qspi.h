@@ -1,6 +1,8 @@
 #ifndef QSPI_H__
 #define QSPI_H__
 
+#include <stdint.h>
+
 enum erase_len{
     ERASE_4KB   = 0,
     ERASE_64KB  = 1,
