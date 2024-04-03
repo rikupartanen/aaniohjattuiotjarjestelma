@@ -45,4 +45,15 @@ int qspi_write(uint32_t *tx_buff, size_t tx_len, uint32_t dst);
 int qspi_erase(uint32_t start, enum erase_len len);
 
 
+/* @brief Configure and activate QSPI peripheral 
+ * @note Currently there is no way to change the configuration,
+ *       this simply functions as a wrapper for some asm procedures. */
+void qspi_init(void);
+
+/* @brief Deactivate QSPI peripheral.
+ * @note This is only really useful 
+ *       if power consumption has to be minimized. */
+void qspi_deactivate(void);
+
+
 #endif /* QSPI_H__ */
