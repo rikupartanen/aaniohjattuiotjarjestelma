@@ -6,6 +6,9 @@
 .global _qspi_activate
 .type _qspi_activate,%function
 
+.global _qspi_deactivate
+.type _qspi_deactivate,%function
+
 .global _qspi_read
 .type _qspi_read,%function
 
@@ -30,16 +33,9 @@
 .equ GPIO_BASE, GPIO_BASE_S
 
 
-/* SECTION .bss */
 .section .bss
-read_data: .word 0x0    // use for test read
-test_data: .word 0x0
-
-/* SECTION .data */
 .section .data
 
-
-/* SECTION .text */
 .section .text
 
 
@@ -171,6 +167,14 @@ _qspi_activate:
     str     r1, [r0]
     bx  lr
 
+/* Set bit in TASKS_DEACTIVATE 
+ * this is only really useful if current consumption
+ * has to be minimized and the QSPI peripheral is sitting idle */
+_qspi_deactivate:
+    ldr     r0, =QSPI_BASE
+    mov     r1, #1
+    str     r1, [r0, #0x010]
+    bx  lr
 
 /* Set default working configuration for QSPI */
 _qspi_configure:
