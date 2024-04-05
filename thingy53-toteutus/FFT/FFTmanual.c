@@ -43,9 +43,9 @@ numberOfWindows = (sizeof(signal) / sizeof(signal[0])-window_size) / window_step
 float windows[numberOfWindows][window_size]; //should be about 124 windows(123 from 0), and 256 values(255 from 0)
 
 windowingFunction(signal, windows); //splits the signal data into windows 
-//printf("Windoweed: %.15f\n", windows[123][1]);
+//printf("Windoweed: %.18f\n", windows[123][1]);
 hammingFunction(window_size, windows); //reduces spectral leakage from windowing
-//printf("After Hamming window: %.15f\n", windows[123][1]);
+//printf("After Hamming window: %.18f\n", windows[123][1]);
 
 spectrogramFunction(windows);
 
@@ -76,7 +76,7 @@ void windowingFunction(float *signal, float (*windows)[window_size]){
 
 //function for the Hamming window
 void hammingFunction(int window_size, float (*windows)[window_size]){
- for (int i = 0; i < numberOfWindows; i++) {
+  for (int i = 0; i < numberOfWindows; i++) {
    for (int j = 0; j < window_size; j++){
      windows[i][j] *= 0.54 - 0.46 * cos(2.0 * M_PI * ((float)j / (float)window_size));
    }
@@ -95,13 +95,13 @@ void spectrogramFunction(float (*windows)[window_size]){
 //FFT function developed via the Cooley-Tukey algorithm
 complex FFT(float *window, int arraySize){
   if (arraySize <= 1){
-     printf("got to the recursive loop...\n");
-     // return....
+     //printf("Got to the recursive loop...\n");
+     return 0;
   }
   float even[arraySize/2];
   float odd[arraySize/2];
   
-  for(int i = 0; i < arraySize; i++){ // split into even and odd positions of the window
+  for(int i = 0; i < arraySize; i++){ // split into even and odd positions of the windows
     if(i % 2 == 0){
       even[i / 2] = window[i];
     }
@@ -110,26 +110,24 @@ complex FFT(float *window, int arraySize){
     }
   }
 
-
-   //placeholders for the recursive calls
-  complex even05[sizeof(even) / sizeof(even[0])];
-  for (int i = 0; i < sizeof(even) / sizeof(even[0]); i++){
-       even05[i] = FFT(even, sizeof(even) / sizeof(even[0]));
-  }
-
-  complex odd05[sizeof(odd) / sizeof(odd[0])];
-  for (int i = 0; i < sizeof(odd) / sizeof(odd[0]); i++){
-      odd05[i] = FFT(odd, sizeof(odd) / sizeof(odd[0]));
-  } 
-
-
+  //printf("The array size is: %d\n", arraySize);
+  
+  FFT(even, sizeof(even) / sizeof(even[0]));
+  FFT(odd, sizeof(odd) / sizeof(odd[0]));
+ double abs_val; 
+  
   complex merged[arraySize];
   for (int i = 0; i < arraySize / 2; i++){
-   complex twiddle_factor = cos((float)2 * M_PI * (float)i / (float)arraySize) - I * sin((float)2 * M_PI * (float)i / (float)arraySize);
-   merged[i] = even05[i] + twiddle_factor + odd05[i];
+   complex twiddle_factor = cos(2.0 * M_PI * (float)i / (float)arraySize) - 1I * sin(2.0 * M_PI * (float)i / (float)arraySize);
+   merged[i] = even[i] + twiddle_factor * odd[i];
+   merged[i + arraySize / 2] = even[i] - twiddle_factor * odd[i];
+  // abs_val = cabs(merged[i]);
+   //printf("The abs val sample is: %0.15f\n", abs_val);
+   printf("twiddle factor is: %.30lf %.2lfi, the i is %d, and array size is %d \n", creal(twiddle_factor), cimag(twiddle_factor), i, arraySize);
+   
   }
   
- 
-  return *merged; //placeholder
-}
+  //printf("merged: %.15f\n", merged[0]);
 
+  return 0; //placeholder
+}
