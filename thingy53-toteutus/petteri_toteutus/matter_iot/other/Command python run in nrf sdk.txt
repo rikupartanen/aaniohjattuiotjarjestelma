@@ -1,0 +1,1 @@
+python /c/ncs/v2.6.0/modules/lib/matter/scripts/tools/zap/generate.py /c/nordic_crap/thingy53/omat_koodit/matter_iot/src/template_new_setup.zap -t /c/ncs/v2.6.0/modules/lib/matter/src/app/zap-templates/app-templates.json -o /c/nordic_crap/thingy53/omat_koodit/matter_iot/src/zap-generated
