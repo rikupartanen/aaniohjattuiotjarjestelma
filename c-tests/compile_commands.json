@@ -1,0 +1,7 @@
+[
+  {
+    "directory": ".",
+    "command": "gcc -O2 -Wall -Wextra main.c -o main",
+    "file": "main.c"
+  }
+]
