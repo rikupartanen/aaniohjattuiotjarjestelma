@@ -1,0 +1,1 @@
+python .\scripts\tools\zap\generate.py ..\..\..\nrf\samples\matter\sensor\src\template.zap -t src\app\zap-templates\app-templates.json -o ..\..\..\nrf\samples\matter\sensor\src\zap-generated

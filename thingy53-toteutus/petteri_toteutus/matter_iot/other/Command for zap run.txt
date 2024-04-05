@@ -1,0 +1,1 @@
+zap C:\nordic_crap\thingy53\omat_koodit\matter_iot\src\template.zap --zcl C:\ncs\v2.6.0\modules\lib\matter\src\app\zap-templates\zcl\zcl.json --gen C:\ncs\v2.6.0\modules\lib\matter\src\app\zap-templates\app-templates.json
