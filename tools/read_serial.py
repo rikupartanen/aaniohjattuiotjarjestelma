@@ -50,10 +50,23 @@ def start_write(line: str, port: Serial):
             file.write(line + "\n")
             line = write_file(file, port)
 
+if argc >= 3 and sys.argv[2] == '-no-buffer':
+    try:
+        with open("buffer", "w") as file:
+            data = []
+            while True:
+                _bytes = port.read(4)
+                data.append(str(_bytes, 'utf8'))
+                if len(data) == 4:
+                    file.write(f"{data.pop()} {data.pop()} {data.pop()} {data.pop()}\n")
+    except KeyboardInterrupt:
+        port.close()
+        exit()
 
-_quit = False
-while not _quit:
-    line = get_decoded_line(port)
-    if BUFFER_START in line:
-        start_write(line, port)
-        _quit = True
+else:
+    _quit = False
+    while not _quit:
+        line = get_decoded_line(port)
+        if BUFFER_START in line:
+            start_write(line, port)
+            _quit = True
