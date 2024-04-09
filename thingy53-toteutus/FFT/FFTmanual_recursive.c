@@ -13,7 +13,6 @@ void windowingFunction(float *signal, double (*windows)[window_size]);
 void hammingFunction(int window_size, double (*windows)[window_size]);
 void spectrogramFunction(double (*windows)[window_size], double (*spectrogram)[window_size]);
 void FFT(complex double *window, int arraySize); //it takes only a single window array from windows arrays, have to specify the size because of the decay
-void fft2(complex double *x , int L);
 
 
 
