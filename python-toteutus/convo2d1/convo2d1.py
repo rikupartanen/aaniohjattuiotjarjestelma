@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
-# version 0.01 2024-03-21 AK
+# v0.02 2024-04-09 AK - fixed iterating over source image, delete separate test file
+# v0.01 2024-03-21 AK
 # no strides or padding
 # source and kernel sizes detected automatically
 
@@ -45,12 +46,74 @@ def convo2d1(source, kernel_list, bias=None):
                 temp = 0
                 for kernel_y in range(kernely):  # iterate over kernel cells
                     for kernel_x in range(kernelx):
-                        temp = temp + source[output_y][output_x] * kernel_list[kernel_n][kernel_y][kernel_x]
+                        temp += source[output_y+kernel_y][output_x+kernel_x] * kernel_list[kernel_n][kernel_y][kernel_x]
                 if DEBUG >= 2: print("output_y=", output_y, " output_x=", output_x, " kernel_n=", kernel_n, " kernel_y=", kernel_y, " kernel_x=", kernel_x, "inserting", temp, "to", "output[", kernel_n, "][", output_y, "][", output_x, "]")
                 if bias == None:
-                    output[kernel_n][output_y][output_x] = temp  # write result to output cell
+                    output[kernel_n][output_y][output_x] = max(temp, 0)  # write result to output cell, set negative values to 0 (relu)
                 else:
-                    output[kernel_n][output_y][output_x] = temp + bias[kernel_n]  # add bias from same bias list index as output list index
+                    output[kernel_n][output_y][output_x] = max((temp + bias[kernel_n]), 0)  # add bias from same bias list index as output list index, set negative values to 0 (relu)
                 output_x = output_x + 1  # if we had strides they would go here
             output_y = output_y + 1  # if we had strides they would go here
     return output
+
+def testaus():
+    from pprint import pprint  # for neater output
+
+    kuva1 = [
+        [1,2,3,1,2,3,1,2,3],
+        [4,5,6,4,5,6,4,5,6],
+        [7,8,9,7,8,9,7,8,9],
+        [1,2,3,1,2,3,1,2,3],
+        [4,5,6,4,5,6,4,5,6],
+        [7,8,9,7,8,9,7,8,9],
+        [1,2,3,1,2,3,1,2,3],
+        [4,5,6,4,5,6,4,5,6],
+        [7,8,9,7,8,9,7,8,9]]
+    
+    kuva2 = [
+        [1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1,1]]
+
+    kuva3 = [
+        [1,2,3,4,5,6,7,8,9],
+        [1,2,3,4,5,6,7,8,9],
+        [1,2,3,4,5,6,7,8,9],
+        [2,3,4,5,6,7,8,9,10],
+        [2,3,4,5,6,7,8,9,10],
+        [2,3,4,5,6,7,8,9,10],
+        [3,4,5,6,7,8,9,10,11],
+        [3,4,5,6,7,8,9,10,11],
+        [3,4,5,6,7,8,9,10,11],
+        [4,5,6,7,8,9,10,11,12],
+        [4,5,6,7,8,9,10,11,12],
+        [4,5,6,7,8,9,10,11,12]]
+
+    kernel1 =  [[1,1,1],
+                [1,1,1],
+                [1,1,1]]
+    kernel2 =  [[2,2,2],
+                [2,2,2],
+                [2,2,2]]
+    kernel3 =  [[3,3,3],
+                [3,3,3],
+                [3,3,3]]
+    kernel4 =  [[4,4,4],
+                [4,4,4],
+                [4,4,4]]
+    kernelit = [kernel1, kernel2, kernel3, kernel4]
+    biaslist = [10000, 20000, 30000, 40000]
+
+    print("Result:")
+    pprint(convo2d1(kuva3, kernelit, biaslist))
+    print("\n")
+
+if __name__ == "__main__":
+    testaus()
