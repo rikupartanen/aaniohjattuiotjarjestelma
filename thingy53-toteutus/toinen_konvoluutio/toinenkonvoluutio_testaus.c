@@ -86,6 +86,6 @@ int main() {
 
     // Kutsutaan konvoluutio
     printf("Aloitetaan konvoluutio\n");
-    toinenkonvoluutio(image, kernels, bias);
+    toinenkonvoluutio(image);
     return 0;
 }
