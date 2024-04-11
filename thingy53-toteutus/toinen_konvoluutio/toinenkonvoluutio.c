@@ -8,7 +8,7 @@ Nämä voidaan asettaa vakioiksi header-filessä sillä input-samplet taitavat o
 koska data tulee aina sekunnin mittaisena 16000 hZ tiedostona joka muutetaan tiettyyn muotoon.
 Kernelit sekä bias täytyy pitää myös aina samana, niiden arvot täytyy päättää ennen kuin aletaan
 opettamaan mallia.
-Tällä hetkellä koodi printtaa konvoluution tulokset, sen voi estää kommentoimalla rivit 103-113
+Tällä hetkellä koodi printtaa konvoluution tulokset, sen voi estää kommentoimalla rivit 107-120
 
 Toisen konvoluution kutsumisesimerkki:
 
@@ -44,6 +44,8 @@ Tuossa käytetty image-float voisi näyttää esimerkiksi tältä:
 };
 
 Ja tällöin NUM_LAYERS olisi 3, sekä IMAGE_SIZE_X ja IMAGE_SIZE_Y olisivat 5
+Output tulee float toinenkonvoluutiooutput arrayna, koko riippuu inputeista
+
 */
 
 
@@ -53,7 +55,7 @@ float relu(float x) {
 }
 
 //Bias-arvot, pidettävä samana
-float bias[NUM_KERNELS] = {0.05, 0.05, 0.05, 0.05, 0.01, 0.03, 0.1};
+float bias[NUM_KERNELS] = {0.05, 0.02, -0.05, 0.06, 0.01, 0.03, 0.1};
 
 //Kernel-arvot, pidettävä samana
 float kernels[NUM_KERNELS][KERNEL_SIZE][KERNEL_SIZE] = {
@@ -71,18 +73,19 @@ void toinenkonvoluutio(float image[NUM_LAYERS][IMAGE_SIZE_Y][IMAGE_SIZE_X]) {
 
     // Output array, alustetaan nollilla
     int output_layers = NUM_LAYERS * NUM_KERNELS;
-    float output[output_layers][IMAGE_SIZE_Y - KERNEL_SIZE + 1][IMAGE_SIZE_X - KERNEL_SIZE + 1];
+    int oikealayer = 0;
+    float toinenkonvoluutiooutput[output_layers][IMAGE_SIZE_Y - KERNEL_SIZE + 1][IMAGE_SIZE_X - KERNEL_SIZE + 1];
     for (int layer = 0; layer < output_layers; layer++) {
         for (int image_y = 0; image_y < IMAGE_SIZE_Y - KERNEL_SIZE + 1; image_y++) {
             for (int image_x = 0; image_x < IMAGE_SIZE_X - KERNEL_SIZE + 1; image_x++) {
-                output[layer][image_y][image_x] = 0.0;
+                toinenkonvoluutiooutput[layer][image_y][image_x] = 0.0;
+            }
         }
     }
-}
 
     // Konvoluutioidaan jokaisen kernelin verran
     for (int kernel_num = 0; kernel_num < NUM_KERNELS; kernel_num++) {
-        for (int layer = 0; layer < NUM_LAYERS; layer++) {
+        for (int layer = 0; layer < NUM_LAYERS; layer++, oikealayer++) {
             // Liikutetaan kerneliä kuvan päällä
             for (int image_y = 0; image_y <= IMAGE_SIZE_Y - KERNEL_SIZE; image_y++) {
                 for (int image_x = 0; image_x <= IMAGE_SIZE_X - KERNEL_SIZE; image_x++) {
@@ -95,21 +98,24 @@ void toinenkonvoluutio(float image[NUM_LAYERS][IMAGE_SIZE_Y][IMAGE_SIZE_X]) {
                     }
                 }
                 // Lisätään bias tulokseen ja käytetään arvot ReLU-funktion kautta
-                output[layer][image_y][image_x] = relu(sum + bias[layer]);
+                toinenkonvoluutiooutput[oikealayer][image_y][image_x] = relu(sum + bias[kernel_num]);
+                }
             }
         }
     }
 
     // Printataan jokaisen konvoluution tulos
-    for (int i = 0; i < NUM_LAYERS; ++i){
-        printf("Output of convolution for kernel %d:\n", i + 1);
+    int layerprint = 0, kernelprint = 1;
+    for (int i = 0; i < output_layers; ++i, ++layerprint){
+        if (layerprint == NUM_LAYERS){layerprint = 0, kernelprint++;}
+        printf("Output of convolution for layer %d", layerprint + 1);
+        printf(" with kernel %d:\n", kernelprint);
         for (int j = 0; j <= IMAGE_SIZE_Y - KERNEL_SIZE; ++j) {
             for (int k = 0; k <= IMAGE_SIZE_X - KERNEL_SIZE; k++) {
-                printf("%.2f\t", output[i][j][k]);
+                printf("%.2f\t", toinenkonvoluutiooutput[i][j][k]);
                 }
             printf("\n");
         }
         printf("\n");
         }
-    }
 }
