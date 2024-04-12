@@ -72,7 +72,7 @@ static int16_t *g_buff[N_BUFF];
 static bool g_pdm_stopped = 0;
 
 /* Quick and (very) dirty solution to changing the PDM sampling ratio */
-void set_pdm_ratio(enum PDM_RATIO ratio){
+static inline void set_pdm_ratio(enum PDM_RATIO ratio){
     /* 0x50026520 PDM_RATIO register address for SECURE application 
      * If bit 0 is set, ratio will be 80.
      * If bit 0 is unset, ratio will be 64.*/
@@ -142,12 +142,12 @@ static inline uint8_t switch_buffer(uint8_t cur){
     return ( (cur + 1) >= N_BUFF ? 0 : (cur + 1) );
 }
 
-void pdm_stop(){
+static inline void pdm_stop(){
     nrfx_pdm_stop();
     g_pdm_stopped = 1;
 }
 
-void pdm_start(){
+static inline void pdm_start(){
     g_buffsel = 0;
     nrfx_pdm_start();
     g_pdm_stopped = 0;
