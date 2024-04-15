@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-#include "hasher.c"
+#include "hasher.h"
 #include "layerparser.h"
 #include "weights.h"
 
