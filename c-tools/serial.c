@@ -6,8 +6,12 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include "test.h"
+#include "serial.h"
+#include "layer.h"
+
 
 #define UART_ACK    0x06
 #define UART_NAK    0x15
@@ -17,6 +21,9 @@
 #define PROT_WRITE  0xA0
 
 #define MAX_LEN 128
+#define WORDSIZE 4
+#define IS_ALIGNED(x) (!(x % WORDSIZE))
+#define ALIGN(x) ((x + (WORDSIZE -1)) & -WORDSIZE)
 
 
 #ifdef DEBUG
@@ -25,7 +32,7 @@
 #define PRINT_RET(x) (x)
 #endif
 
-int set_attrs(int fd, int speed){
+static int set_attrs(int fd, int speed){
     struct termios tty;
 
     if(tcgetattr(fd, &tty) != 0){
@@ -65,7 +72,7 @@ int set_attrs(int fd, int speed){
 
 
 /* Writes len bytes from tx_buff to receiver */
-int do_write(int fd, const _Float16 *tx_buff, uint8_t len){
+static int do_write(int fd, uint8_t *tx_buff, uint8_t len){
     if(len > MAX_LEN || len == 0 || len % 2 != 0){
         return -1;
     }
@@ -115,7 +122,7 @@ int do_write(int fd, const _Float16 *tx_buff, uint8_t len){
     return 0;
 }
 
-int wstart(int fd){
+static int wstart(int fd){
     uint8_t cmd = PROT_WSTART;
     uint8_t ret;
     write(fd, &cmd, 1);
@@ -129,7 +136,7 @@ int wstart(int fd){
     return 0;
 }
 
-int wstop(int fd){
+static int wstop(int fd){
     uint8_t cmd = PROT_WSTOP;
     uint8_t ret;
     write(fd, &cmd, 1);
@@ -143,9 +150,7 @@ int wstop(int fd){
     return 0;
 }
 
-
-int main(int argc, char *argv[]){
-    char *port = "/dev/ttyACM0";
+int open_port(const char *port){
     int fd = open(port, O_RDWR | O_NOCTTY | O_SYNC);
 
     if(fd < 0){
@@ -155,29 +160,80 @@ int main(int argc, char *argv[]){
 
     set_attrs(fd, B115200);
 
-    int ret;
-
-    puts("Sending WSTART");
-    ret =  wstart(fd);
-    
-    if(ret){
-        return -1;
-    }
-
-    printf("Writing %zu bytes\n", dense.size);
-    ret = do_write(fd, dense.values, dense.size);
-    if(ret){
-        return -1;
-    }
-
-    puts("Sending WSTOP");
-    ret = wstop(fd);
-    if(ret){
-        return -1;
-    }
-
-
-    close(fd);
-    puts("Done");
-    return 0;
+    return fd;
 }
+
+void close_port(int fd){
+    close(fd);
+}
+
+
+void dummy_write(const void *tx_buff, uint8_t len){
+    if(!IS_ALIGNED(len)){
+        uint8_t aligned = ALIGN(len);
+        uint8_t pad = aligned - len;
+
+        uint8_t *buff = calloc(sizeof(uint8_t), aligned * sizeof(uint8_t));
+        memmove(buff, tx_buff, len);
+
+        for(uint8_t i = 0; i < aligned; ++i){
+            printf("%#x ", ((uint8_t*)buff)[i]);
+        }
+
+        putchar('\n');
+        free(buff);
+
+        return;
+    }
+
+    for(uint8_t i = 0; i < len; ++i){
+        printf("%#x ", ((uint8_t*)tx_buff)[i]);
+    }
+
+    putchar('\n');
+}
+
+int write_weights(int fd, struct layer *l){
+    size_t kernel_bytes = 0;
+    size_t bias_bytes = 0;
+    kernel_bytes = l->weights->klen * sizeof(_Float16);
+    bias_bytes = l->weights->blen * sizeof(_Float16);
+
+    printf("\nWriting layer %s\n", l->name);
+
+    printf("Kernel length of %zu bytes starting at address %#x\n", kernel_bytes, l->offsets->kernel);
+    printf("Will be written in %zu %zu byte blocks and one %zu byte block\n", kernel_bytes / MAX_LEN, MAX_LEN, kernel_bytes % MAX_LEN); 
+
+    if(kernel_bytes % MAX_LEN != 0){
+        size_t blocks = kernel_bytes / MAX_LEN;
+
+        for(size_t i = 0; i < blocks; ++i){
+            dummy_write(l->weights->kernel + (i * MAX_LEN / sizeof(_Float16)), MAX_LEN);
+        }
+
+        dummy_write(l->weights->kernel + ((blocks * MAX_LEN) / sizeof(_Float16)), kernel_bytes % MAX_LEN);
+
+    }
+
+    if(bias_bytes == 0){
+        return 0;
+    }
+
+    printf("Bias length of %zu bytes starting at address %#x\n", bias_bytes, l->offsets->bias);
+    printf("Will be written in %zu %zu byte blocks and one %zu byte block\n", bias_bytes / MAX_LEN, MAX_LEN, bias_bytes % MAX_LEN); 
+
+    if(bias_bytes % MAX_LEN != 0){
+        size_t blocks = bias_bytes / MAX_LEN;
+
+        for(size_t i = 0; i < blocks; ++i){
+            dummy_write(l->weights->bias + (i * MAX_LEN / sizeof(_Float16)), MAX_LEN);
+        }
+
+        dummy_write(l->weights->bias + ((blocks * MAX_LEN) / sizeof(_Float16)), bias_bytes % MAX_LEN);
+
+    }
+
+
+}
+
+
