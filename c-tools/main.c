@@ -6,19 +6,8 @@
 
 #define WORDSIZE 4
 #define IS_ALIGNED(x) (!(x % WORDSIZE))
-#define ALIGN(x) (x = (x + (WORDSIZE -1)) & -WORDSIZE)
+#define ALIGN(x) ((x + (WORDSIZE -1)) & -WORDSIZE)
 
-struct layer_map{
-    const _Float16 *kernel;
-    const size_t klen;
-    const _Float16 *bias;
-    const size_t blen;
-};
-
-struct layer_offset{
-    size_t kernel;
-    size_t bias;
-};
 
 void calculate_offsets(struct layer **layers, size_t n){
     for(size_t i = 0; i < n; ++i){
@@ -35,8 +24,8 @@ void calculate_offsets(struct layer **layers, size_t n){
         layers[i]->offsets->kernel = layers[i - 1]->offsets->bias + (layers[i - 1]->weights->blen * sizeof(_Float16));
         layers[i]->offsets->bias = layers[i]->offsets->kernel + (layers[i]->weights->klen * sizeof(_Float16));
 
-        ALIGN(layers[i]->offsets->kernel);
-        ALIGN(layers[i]->offsets->bias);
+        layers[i]->offsets->kernel = ALIGN(layers[i]->offsets->kernel);
+        layers[i]->offsets->bias = ALIGN(layers[i]->offsets->bias);
     }
 
 }
@@ -65,9 +54,13 @@ int main(){
         print_offsets(layers[i]);
     }
 
+    int fd = open_port("/dev/ttyACM0");
+    write_weights(fd, layers[0]);
+
+    close_port(fd);
 
 
-    print_layers(layers, n_layers);
+//    print_layers(layers, n_layers);
     free_layers(layers, n_layers);
     free(layers);
 
