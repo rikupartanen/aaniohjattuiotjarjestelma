@@ -5,20 +5,12 @@
 
 #include "hasher.c"
 #include "layerparser.h"
+#include "weights.h"
 
-#define FILENAME "layer.toml"
+#define FILENAME "map.toml"
 
 
 const char COMMENT = '#';
-
-/*struct layer {
-    char *name;
-    size_t *kshape;
-    size_t kshape_len;
-    size_t *bshape;
-    size_t bshape_len;
-};*/
-
 
 /* Trim a string in place */
 static size_t trim(char *s){
@@ -203,6 +195,7 @@ static inline void free_layer(struct layer *l){
     free(l->name);
     free(l->kshape);
     free(l->bshape);
+    free(l->offsets);
     free(l);
 }
 
@@ -230,6 +223,15 @@ static inline void print_layer(struct layer *l){
     printf("\n\tBshape: ");
     print_shape(l->bshape, l->bshape_len);
     printf("\n\n");
+}
+
+void get_weights(struct layer *l){
+    if(&map[u8_hash(l->name)] == NULL){
+        printf("Error: no weights found for hash %#x\n", u8_hash(l->name));
+        l->weights = NULL;
+    }
+
+    l->weights = &map[u8_hash(l->name)];
 }
 
 void print_layers(struct layer **layers, size_t n){
@@ -316,6 +318,7 @@ size_t get_layers(struct layer ***layers){
 
     free(line);
     fclose(fp);
+
 
     return section;
 }
