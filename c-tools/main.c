@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "layerparser.h"
 #include "serial.h"
@@ -39,7 +40,12 @@ void print_offsets(struct layer *l){
     putchar('\n');
 }
 
-int main(){
+int main(int argc, char *argv[]){
+
+    if(argc == 1){
+        puts("give some arguments");
+        return 0;
+    }
 
     struct layer **layers = NULL;
     size_t n_layers = get_layers(&layers);
@@ -50,17 +56,25 @@ int main(){
     }
 
     calculate_offsets(layers, n_layers);
-    for(size_t i = 0; i < n_layers; ++i){
-        print_offsets(layers[i]);
+
+    if(strcmp(argv[1], "offsets") == 0){
+        for(size_t i = 0; i < n_layers; ++i){
+            print_offsets(layers[i]);
+        }
+        return 0;
     }
 
     int fd = open_port("/dev/ttyACM0");
+
     write_weights(fd, layers[0]);
+    write_weights(fd, layers[1]);
+    write_weights(fd, layers[2]);
+    write_weights(fd, layers[3]);
+    write_weights(fd, layers[4]);
 
     close_port(fd);
 
 
-//    print_layers(layers, n_layers);
     free_layers(layers, n_layers);
     free(layers);
 
