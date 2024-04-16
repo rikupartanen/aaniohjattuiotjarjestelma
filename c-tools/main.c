@@ -4,6 +4,8 @@
 
 #include "layerparser.h"
 #include "serial.h"
+#include "hasher.h"
+#include "headergen.h"
 
 #define WORDSIZE 4
 #define IS_ALIGNED(x) (!(x % WORDSIZE))
@@ -57,22 +59,25 @@ int main(int argc, char *argv[]){
 
     calculate_offsets(layers, n_layers);
 
+    if(strcmp(argv[1], "header") == 0){
+        write_header("header.h", layers, n_layers);
+    }
+
     if(strcmp(argv[1], "offsets") == 0){
         for(size_t i = 0; i < n_layers; ++i){
             print_offsets(layers[i]);
         }
-        return 0;
     }
+    /*
+       int fd = open_port("/dev/ttyACM0");
 
-    int fd = open_port("/dev/ttyACM0");
+       write_weights(fd, layers[0]);
+       write_weights(fd, layers[1]);
+       write_weights(fd, layers[2]);
+       write_weights(fd, layers[3]);
+       write_weights(fd, layers[4]);
 
-    write_weights(fd, layers[0]);
-    write_weights(fd, layers[1]);
-    write_weights(fd, layers[2]);
-    write_weights(fd, layers[3]);
-    write_weights(fd, layers[4]);
-
-    close_port(fd);
+       close_port(fd);*/
 
 
     free_layers(layers, n_layers);
