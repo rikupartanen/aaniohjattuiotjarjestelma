@@ -19,6 +19,7 @@
 #define PROT_WSTART     0x80
 #define PROT_WSTOP      0x90
 #define PROT_WRITE      0xA0
+#define PROT_SEEK       0
 
 
 #define EXTFLASH_SIZE 0x800000
@@ -32,8 +33,6 @@ enum state{
     STATE_READ
 };
 
-
-volatile uint32_t test[32];
 
 /* Pointer will keep track of where we are writing in memory */
 static uint32_t g_writeptr = 0x0;
@@ -55,10 +54,12 @@ static inline void uart_print(char *s){
 }
 
 void dummy_write(uint32_t *tx_buff, size_t tx_len, uint32_t dst){
-    for(int i = 0; i < tx_len / sizeof(uint32_t); ++i){
+/*    for(int i = 0; i < tx_len / sizeof(uint32_t); ++i){
         test[i] = tx_buff[i];
     }
-    return;
+    return;*/
+
+    qspi_write(tx_buff, tx_len, dst);
 }
 
 int write_mode(){
@@ -87,7 +88,8 @@ int write_mode(){
     }
 
     /* Make sure our len is actually word-aligned 
-     * and round up if required */
+     * and round up if required 
+     * transmitter side should have already sorted this */
     len = (len + (WORDSIZE - 1)) & -WORDSIZE;
 
     /* We can use malloc() here since we're always copying a multiple of 4 bytes
@@ -116,6 +118,8 @@ static inline void wstop(){
 
 
 int main(void){	
+    qspi_init();
+//    qspi_erase(0x0, ERASE_ALL);
     static enum state state = STATE_IDLE;
     char input = 0;
 
@@ -143,11 +147,12 @@ int main(void){
                 wstop();
                 break;
             case PROT_WRITE:
-                if(state == STATE_WRITE)
+                if(state == STATE_WRITE){
                     int ret = write_mode(); 
                     /* go back to idle if write fails */
                     if(ret != 0)
                         state = STATE_IDLE;
+                }
                 break;
         }
 
