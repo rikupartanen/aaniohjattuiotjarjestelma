@@ -62,6 +62,7 @@ class LayerMap:
         file.write("""#ifndef WEIGHTS_H__
 #define WEIGHTS_H__
 #include <stddef.h>
+#include "layer.h"
 """)
 
         for k in self.layers:
@@ -94,13 +95,6 @@ class LayerMap:
 
     def __hash_map(self):
         ret = "\n"
-        ret += """struct layer_map {
-        const _Float16 *kernel;
-        const size_t klen;
-        const _Float16 *bias;
-        const size_t blen;
-};
-\n"""
         ret += 'struct layer_map map[256] = {\n'
         for l in self.layers:
             ret += self.__hash_layer(l)
@@ -212,8 +206,6 @@ def main(argc: int, argv: list[str]):
     model = import_model(argv[1])
     lMap = get_layer_map(model)
     print(lMap)
-
-    print(repr(Files.CONF))
 
     try:
         files = parse_command(argv[2])
