@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <errno.h>
 
 #include "hasher.h"
 #include "layerparser.h"
@@ -35,6 +36,7 @@ static size_t trim(char *s){
     return len;
 }
 
+
 size_t trim_value(char *s){
     char *p = s;
     size_t len = strlen(s);
@@ -58,6 +60,7 @@ size_t trim_value(char *s){
     return len;
 
 }
+
 
 static size_t trim_header(char *s){
     char *p = s;
@@ -242,8 +245,14 @@ void print_layers(struct layer **layers, size_t n){
 }
 
 
-size_t get_layers(struct layer ***layers){
-    FILE *fp = fopen(FILENAME, "r");
+size_t get_layers(const char *filename, struct layer ***layers){
+    FILE *fp = fopen(filename, "r");
+    if(fp == NULL){
+        perror("get_layers: Error opening file");
+        *layers = NULL;
+        return 0;
+    }
+
     ssize_t read = 0;
     char *line = NULL;
     size_t n;
@@ -258,7 +267,6 @@ size_t get_layers(struct layer ***layers){
      * NOT the section index, that's (section - 1) */
     size_t section = 0;
 
-    //struct layer **layers = NULL;
 
     while((read = getline(&line, &n, fp)) != -1){
         /* skip ahead if we've only read an empty line */
