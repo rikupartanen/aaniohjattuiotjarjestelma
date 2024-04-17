@@ -5,6 +5,6 @@
 
 #include "layer.h"
 
-void write_header(const char *name, struct layer **layers, size_t n);
+int write_header(const char *name, struct layer **layers, size_t n);
 
 #endif /* HEADERGEN_H__ */
