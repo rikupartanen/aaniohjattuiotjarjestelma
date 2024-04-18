@@ -27,7 +27,7 @@ FILE *raw = fopen("preprocessed_track.txt", "r");
 fclose(raw);
 
 
-//array to store the spectrogram data, the output will contain 124 arrays filled with 256/2 values. 
+//array to store the spectrogram data, the output will contain 124 arrays filled with 256/2 + 1 = 129 values. 
 double spectrogram[124][256 / 2 + 1];
 
 FFTi(signal, spectrogram);
