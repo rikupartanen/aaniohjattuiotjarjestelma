@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "toinenkonvoluutio.h"
+#include <math.h>
 
 /*
 Toisen konvoluution dokumentointi
@@ -8,7 +9,8 @@ Nämä voidaan asettaa vakioiksi header-filessä sillä input-samplet taitavat o
 koska data tulee aina sekunnin mittaisena 16000 hZ tiedostona joka muutetaan tiettyyn muotoon.
 Kernelit sekä bias täytyy pitää myös aina samana, niiden arvot täytyy päättää ennen kuin aletaan
 opettamaan mallia. Kernelien ja biaksien määrä määräytyy inputlayerien ja halutun outputmäärän perusteella.
-Tällä hetkellä koodi printtaa konvoluution tulokset, sen voi estää kommentoimalla rivit 135-145
+Aktivointifunktioksi voi valito ReLU:n tai Sigmoidin, kumpi on parempi riippuu tulevasta datasta
+Tällä hetkellä koodi printtaa konvoluution tulokset, sen voi estää kommentoimalla rivit 141-152
 
 Toisen konvoluution kutsumisesimerkki:
 
@@ -48,10 +50,15 @@ Output tulee float toinen_konvoluutio_output arrayna, koko riippuu inputeista ja
 
 */
 
-
+// Erilaisia aktivointifunktioita
 // ReLU-funktio, jos arvo > 0 antaa saman arvon takaisin, jos arvo < 0 antaa tulokseksi 0
 float relu(float x) {
     return (x > 0) ? x : 0;
+}
+
+// Sigmoid-funktio, antaa arvon välillä -8 ja 8, hyvä jos input-arvot ovat normalisoitu 0-1 välille
+float sigmoid(float x) {
+    return 1 / (1 + exp(-x));
 }
 
 //Bias-arvot
