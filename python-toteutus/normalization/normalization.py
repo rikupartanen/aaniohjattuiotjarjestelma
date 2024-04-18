@@ -3,10 +3,10 @@ import numpy as np
 def normalization(data, mean, var):
   """
   Normalisointi-funktion argumentit:
-  - data, 1-4 ulotteinen Numpy-lista. 3- ja 4-ulotteisilla listoilla viimeisen akselin pituuden tulee olla 1.
+  - data, 1-4 ulotteinen NumPy-taulukko. 3- ja 4-ulotteisilla taulukoilla viimeisen akselin pituuden tulee olla 1.
   - mean, keskiarvo, jonka mukaan normalisoidaan. Liukuluku.
   - var, varianssi, jonka mukaan normalisoidaan. Liukuluku.
-  Palauttaa datan normalisoituna samanmuotoisessa Numpy-listassa kuin argumenttina annettu data.
+  Palauttaa datan normalisoituna samanmuotoisessa NumPy-taulukossa kuin argumenttina annettu data.
   """
   # Varmistetaan ettei jaeta nollalla
   if(var == 0):
@@ -17,7 +17,7 @@ def normalization(data, mean, var):
   dims = len(norm_data.shape)
   orig_dims = dims
 
-  # (b, x, y, 1) muotoisella datalla ajetaan batch kerrallaan
+  # (b, x, y, 1) muotoisella datalla ajetaan 3D-taulukko kerrallaan
   # (x, y, 1) datamuodossa tätä funktiota rekursiivisesti
   if((dims == 4) and (len(data[0, 0, 0, :]) == 1)):
     batch_size = len(data[:, 0, 0, 0])
@@ -36,6 +36,7 @@ def normalization(data, mean, var):
     for i in range(len(norm_data)):
       norm_data[i] = (data[i] - mean) / np.sqrt(var)
   elif(dims == 2):
+    # Normalisoidaan jokainen alkio 2D-datasta
     for i, row in enumerate(norm_data):
       for j in range(len(row)):
         norm_data[i][j] = (data[i][j] - mean) / np.sqrt(var)
@@ -94,56 +95,34 @@ def testaus4D():
 
   return 0
 
-def devaus():
+def testaus_random(count=1):
   """
-  Funktion kehityksessä käytettyjä testaus ja debug juttuja.
+  Testi satunnaisdatalle.
   """
-  # Ota yksittäinen resizattu spektri
-  # spectrum_single = np.load('resized_single_spectrogram.npy')
-  example_spec_input = np.load('ex_ds_after_resize.npy')[0]
-  print(example_spec_input.shape)
+  from tensorflow.keras import layers # type: ignore
 
-  # print(spectrum_single[:, :, 0].shape)
-  # print(spectrum_single[0, 0, :].shape)
-
-  #ret = normalization(spectrum_single, 0.125, 0.584)
-  #ret = normalization(spectrum_single, 0.04044, 0.02623)
-  ret = normalization(example_spec_input, 0.07396522, 0.17421223)
-  # Normalisoinnissa:
-  #   Keskiarvon tulisi hakeutua kohti nollaa
-  #   Varianssin tulisi hakeutua kohti ykköstä
-  print(np.mean(example_spec_input))
-  print(np.var(example_spec_input))
-  print(np.mean(ret))
-  print(np.var(ret))
-
-  # Ota datasetti spektrejä
-  #spectrum_ds = np.load('resized_example_spectrograms.npy')
-  example_ds_input = np.load('ex_ds_after_resize.npy')
-  print(example_ds_input.shape)
-
-  # print(spectrum_ds[:, :, :, 0].shape)
-  # print(spectrum_ds[0, 0, 0, :].shape)
-
-  #ret = normalization(spectrum_ds, 0.125, 0.584)
-  #ret = normalization(spectrum_ds, 0.10691, 0.32921)
-  ret = normalization(example_ds_input, 0.097654596, 0.28684083)
-
-  # for b in range(len(spectrum_ds[:, 0, 0, 0])):
-  #   #print(np.array([np.mean(ret[b]), np.var(ret[b])]))
-  #   new_mean_is_closer_to_zero = np.abs(np.mean(ret[b])) < np.abs(np.mean(spectrum_ds[b]))
-  #   new_var_is_closer_to_one = np.abs(1 - np.var(ret[b])) < np.abs(1 - np.var(spectrum_ds[b]))
-  #   print(np.array([new_mean_is_closer_to_zero, new_var_is_closer_to_one]))
-  
-  print(np.mean(example_ds_input))
-  print(np.var(example_ds_input))
-  print(np.mean(ret))
-  print(np.var(ret))
-    
-  return 0
+  print("\nSatunnaistesti 1D-datalla")
+  test_summary = []
+  for i in range(count):
+    nom, denom, bias, bias_mul = np.random.randint(5, 9), np.random.randint(2, 4), np.random.random(1), np.random.randint(2, 9)
+    input1D = np.random.random((20,)) * 1.0 * nom / denom + bias * bias_mul
+    layer = layers.Normalization(axis=None)
+    layer.adapt(input1D)
+    mean, var, _ = layer.get_weights()
+    tulos_tf = layer(input1D)
+    tulos_oma = normalization(input1D, mean, var)
+    tf_sama_kuin_oma = np.allclose(tulos_tf, tulos_oma)
+    print("1D-testi, ovatko TF ja oma tulos keskenään samanlaiset?", tf_sama_kuin_oma)
+    test_summary.append(tf_sama_kuin_oma)
+    if(not tf_sama_kuin_oma):
+      print("TF mean:\t", np.mean(tulos_tf))
+      print("Oma mean:\t", np.mean(tulos_oma))
+      print("TF var:\t\t", np.var(tulos_tf))
+      print("Oma var:\t", np.var(tulos_oma))
+  return test_summary
 
 
 if __name__ == "__main__":
   testaus1D()
   testaus4D()
-  devaus()
+  summary = testaus_random(30)
