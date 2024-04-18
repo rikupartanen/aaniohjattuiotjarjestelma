@@ -47,7 +47,6 @@ def normalization(data, mean, var):
   else:
     print("Unexpected shape. Expected shapes (x), (x, y), (x, y, 1) and (b, x, y, 1). Got ", data.shape)
     return "Unexpected shape."
-
   return norm_data
 
 def testaus1D():
@@ -55,7 +54,6 @@ def testaus1D():
   Tensorflow:n / Keraksen esimerkki.
   Vain axis=None toteutus on tässä tuettu.
   """
-
   from tensorflow.keras import layers # type: ignore
 
   print("\nTesti 1D datalle")
@@ -77,12 +75,10 @@ def testaus4D():
   print("\nTesti 4D-datalle. (Batchatulle 3D-datalle)")
   example_ds_input = np.load('ex_ds_after_resize.npy')
   expected_ds_output = np.load('ex_ds_after_norm.npy')
-  # Output normalisoitu arvoilla:
-  #   Mean  0.12540941
-  #   Var   0.5840317
+  # Output normalisoitu arvoilla: Mean=0.12540941, Var=0.5840317
 
   norm_layer = layers.Normalization(axis=None, mean=0.12540941, variance=0.5840317)
-  #norm_layer.adapt(example_ds_input)  # Tämä antaisi: Mean 0.097654596, Var 0.28684083
+  #norm_layer.adapt(example_ds_input)  # Tämä antaisi: Mean=0.097654596, Var=0.28684083
   tulos_tf = norm_layer(example_ds_input)
   tulos_oma = normalization(example_ds_input, 0.12540941, 0.5840317)
   
@@ -119,6 +115,7 @@ def testaus_random(count=1):
       print("Oma mean:\t", np.mean(tulos_oma))
       print("TF var:\t\t", np.var(tulos_tf))
       print("Oma var:\t", np.var(tulos_oma))
+      # print(1.0*nom/denom)
   return test_summary
 
 
