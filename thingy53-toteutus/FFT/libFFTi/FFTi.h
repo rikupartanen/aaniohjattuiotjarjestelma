@@ -11,6 +11,6 @@ numberOfWindows = 124; - windows
 extern int window_size;
 extern int window_step; 
 
-void FFTi(float *signal, double (*spectrogram)[window_size / 2]); //pass float signal array of 16000 values and double float spectrogram array to store the result
+void FFTi(float *signal, double (*spectrogram)[window_size / 2 + 1]); //pass float signal array of 16000 values and double float spectrogram[124][129] array to store the result
 
 #endif
