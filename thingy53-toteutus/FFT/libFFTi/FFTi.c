@@ -1,6 +1,5 @@
 #include <math.h>     //provides cos(), sin() and cabs(), log2() functions, used in the algorithm
 #include <complex.h> //provides complex calculations
-#include <stdio.h> 
 #include "FFTi.h"
 
 //Parameters for the FFT: 
@@ -35,9 +34,6 @@ void hanningFunction(int window_size, double (*windows)[window_size]){
    }
  }
 }
-
-
-
 
 //Part of FFT, reverses bits to shuffle original array for iterarive FFT
 unsigned short int reversebits(int arraySizePos){
@@ -88,7 +84,7 @@ void FFT(complex double *window, int arraySize){
 
 
 //function to go through FFT and calculate the spectrogram
-void spectrogramFunction(double (*windows)[window_size], double (*spectrogram)[window_size / 2]){
+void spectrogramFunction(double (*windows)[window_size], double (*spectrogram)[window_size / 2 + 1]){
   complex double window[window_size]; //buffer to store values from windows as complex, needed to perfrom calculations correctly
   complex double fftrest[numberOfWindows][window_size]; // array containing the complex result of FFT
 
@@ -107,7 +103,7 @@ void spectrogramFunction(double (*windows)[window_size], double (*spectrogram)[w
   //Calculates the absolute value to get the spectrogram for half of the values(in this case 128) 
   
   for(int i = 0; i < numberOfWindows; i++){
-    for(int j = 0; j < window_size / 2; j++){
+    for(int j = 0; j < window_size / 2 + 1; j++){
      spectrogram[i][j] = cabs(fftrest[i][j]); 
     }
   }
@@ -116,7 +112,7 @@ void spectrogramFunction(double (*windows)[window_size], double (*spectrogram)[w
 
 
 
-void FFTi(float *signal, double (*spectrogram)[window_size / 2]){
+void FFTi(float *signal, double (*spectrogram)[window_size / 2 + 1]){
 
 double windows[numberOfWindows][window_size]; //should be 124 windows, and 256 values in each window array, it holds the windowed data
 
