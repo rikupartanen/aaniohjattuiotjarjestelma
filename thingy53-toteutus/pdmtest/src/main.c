@@ -56,7 +56,7 @@ LOG_MODULE_REGISTER(pdmtest, LOG_LEVEL_DBG);
  * at a 16k sampling frequency, the most we can do per buffer
  * is about 2 seconds so >1 are required for longer periods 
  * Out of memory occurs after around 12 seconds */
-#define N_BUFF  6 
+#define N_BUFF  1 
 
 K_SEM_DEFINE(data_ready, 0, 1);
 
@@ -111,6 +111,17 @@ void dump_buffer(uint16_t *buff, size_t len){
 
 }
 
+void dump_buffer_float(uint32_t *buff, size_t len){
+    printf("\n*** START OF BUFFER DUMP ***\n");
+    for(size_t i = 0; i < len / sizeof(float); ++i){
+        if(i % 8 == 0){ putchar('\n'); }
+        printf("%04x ", buff[i]);
+    }
+
+    putchar('\n');
+    printf("\n*** END OF BUFFER DUMP ***\n\n");
+}
+
 void pcm_amp(int16_t *samples, size_t len, float mult){
     int16_t largest = samples[0];
     
@@ -133,6 +144,14 @@ void pcm_amp(int16_t *samples, size_t len, float mult){
 
     for(size_t i = 0; i < len; ++i){
         samples[i] = (int16_t)(samples[i] * mult);
+    }
+}
+
+
+void int16_to_float(int16_t *samples, size_t len, float *out){
+    const float kMultiplier = (1.0f / (1 << 15));
+    for(size_t i = 0; i < len; ++i){
+        out[i] = (float)samples[i] * kMultiplier;
     }
 }
 
@@ -192,10 +211,12 @@ void butt_handler(uint32_t state, uint32_t has_changed){
 }
 
 int main(){
-    /* TODO: see if this can be preallocated as a slab, this is a bit dirty */
+
     for(int i = 0; i < N_BUFF; ++i){
         g_buff[i] = calloc(AUDIO_BLOCK_SIZE, 1);
     }
+
+    float *out = malloc(2 * AUDIO_BLOCK_SIZE * AUDIO_SAMPLE_SIZE);
 
     nrfx_err_t ret = 0;
     ret = dk_buttons_init(butt_handler);
@@ -219,8 +240,9 @@ int main(){
         k_sem_take(&data_ready, K_FOREVER);
         for(size_t i = 0; i < N_BUFF; ++i){
             pcm_amp(g_buff[i], AUDIO_BLOCK_SIZE, PCM_AMP);
+            int16_to_float(g_buff[i], AUDIO_BLOCK_SIZE, out);
         }
-        dump_buffer_n((uint16_t**)g_buff, AUDIO_BLOCK_SIZE, N_BUFF);
+        dump_buffer_float((uint32_t*)out, AUDIO_BLOCK_SIZE);
     }
 
     for(int i = 0; i < N_BUFF; ++i){
