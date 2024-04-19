@@ -149,8 +149,9 @@ void pcm_amp(int16_t *samples, size_t len, float mult){
 
 
 void int16_to_float(int16_t *samples, size_t len, float *out){
+    const float kMultiplier = (1.0f / (1 << 15));
     for(size_t i = 0; i < len; ++i){
-        out[i] = (float)samples[i] / (float)INT16_MAX;
+        out[i] = (float)samples[i] * kMultiplier;
     }
 }
 
