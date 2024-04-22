@@ -1,4 +1,4 @@
-#include <math.h>     //provides cos(), sin() and cabs(), log2() functions, used in the algorithm
+#include <math.h>     //provides cos(), sin() and cabs() functions, used in the algorithm
 #include <complex.h> //provides complex calculations
 #include "FFTi.h"
 
