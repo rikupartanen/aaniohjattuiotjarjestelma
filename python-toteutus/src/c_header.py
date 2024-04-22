@@ -76,7 +76,7 @@ class LayerMap:
         file.write("#endif //WEIGHTS_H__")
 
     def __flash_part(self, layer: dict, name: str, part: str):
-        ret = f'const _Float16 {name}_{part}[] = {{\n'
+        ret = f'const float {name}_{part}[] = {{\n'
         for i, v in enumerate(layer.get(f'{part}', [])):
             if (i % 6 == 0 and i != 0):
                 ret += '\n'
