@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include "FFTr.h"
+#include "FFTi.h"
 
-float signal[16000]; //load the data from the mic here, 1 track  - float values samples. 
+float signal[16000]; //data from the mic here, 1 track  - float values samples. 
 
 
 int main(){
@@ -27,10 +27,10 @@ FILE *raw = fopen("preprocessed_track.txt", "r");
 fclose(raw);
 
 
-//array to store the spectrogram data, the output will contain 124 arrays filled with 256/2 values. 
+//array to store the spectrogram data, the output will contain 124 arrays filled with 256/2 + 1 = 129 values. 
 float spectrogram[124][256 / 2 + 1];
 
-FFTr(signal, spectrogram);
+FFTi(signal, spectrogram);
 
 //testing the output
 printf("Position 0,0:  C code: %.15f, python code: 0.04093553\n", spectrogram[0][0]);
