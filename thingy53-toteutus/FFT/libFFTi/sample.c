@@ -34,10 +34,10 @@ FFTi(signal, spectrogram);
 
 //testing the output
 printf("Position 0,0:  C code: %.15f, python code: 0.04093553\n", spectrogram[0][0]);
-printf("Position 0,128:  C code: %.15f, python code: 0.00014467\n\n", spectrogram[0][128]);
+printf("Position 0,129:  C code: %.15f, python code: 0.00014467\n\n", spectrogram[0][128]);
 
 printf("Position 124,0:  C code: %.15f, python code: 6.74616284e-01\n", spectrogram[123][0]);
-printf("Position 124,128:  C code: %.15f, python code: 1.62829080e-04\n\n", spectrogram[123][128]);
+printf("Position 124,129:  C code: %.15f, python code: 1.62829080e-04\n\n", spectrogram[123][128]);
 
     return 0; 
 }
