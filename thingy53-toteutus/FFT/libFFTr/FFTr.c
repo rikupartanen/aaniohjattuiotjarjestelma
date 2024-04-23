@@ -1,19 +1,16 @@
 #include <math.h>     //provides cos(), sin() and cabs() functions, used in the algorithm
-#include <complex.h> //provides complex calculations
-#include "FFTi.h"
+#include <complex.h> //provides complex calculations used in FFT
+#include "FFTr.h"
 
-
-
-//Parameters for the FFT: 
-int window_size = 256; //how much values in one window
-int window_step = 128; //how much overlap per window 
-int numberOfWindows = 124; //how much windows 
+int window_size = 256; //parameters for the FFT-algorithm
+int window_step = 128; 
+int numberOfWindows = 124; // will be recalculated in the main
 
 //function to split data into windows, in this case signal float array should have 16000 values from audio sample
 void windowingFunction(float *signal, double (*windows)[window_size]){
   for(int i = 0; i < numberOfWindows; i++){
     int start = i * window_step; 
-    int end = start + window_size;   
+    int end = start + window_size; 
 
     double window[window_size]; 
     
@@ -28,8 +25,8 @@ void windowingFunction(float *signal, double (*windows)[window_size]){
   }
 }
 
-//function for the Hamming window, to split data
-void hanningFunction(int window_size, double (*windows)[window_size]){
+//function for the hunning window, to split reduce spectral leakage
+void hunningFunction(int window_size, double (*windows)[window_size]){
   for (int i = 0; i < numberOfWindows; i++) {
    for (int j = 0; j < window_size; j++){
      windows[i][j] *= 0.5 - 0.5 * cos(2.0 * M_PI * ((float)j / (float)window_size));
@@ -37,53 +34,35 @@ void hanningFunction(int window_size, double (*windows)[window_size]){
  }
 }
 
-//Part of FFT, reverses bits to shuffle original array for iterarive FFT
-unsigned short int reversebits(int arraySizePos){
-  unsigned short int x = 0; 
-  for(int i = 0; i < 8; i++){
-   x <<= 1; 
-   x |= (1 & arraySizePos); 
-   arraySizePos >>= 1; 
-  }
-          
-  return x; 
-}
-
-
-
-//Iterative FFT function
+//Cooley-Tukey radix 2 FFT algorithm 
 void FFT(complex double *window, int arraySize){
-     
-  //bit-reversal permutation
-  for(int i = 1; i < arraySize; i++){
-     short int bitrev = reversebits(i); 
-     if(i > bitrev){   //ensure that it doesn't dublicate
-        complex double temp = window[i];  //then swap numbers
-        window[i] = window[bitrev];
-        window[bitrev] = temp;
-
-     }
+  if (arraySize <= 1){
+      return;
   }
-     
-    for(int length = 2; length <= arraySize; length *= 2){ //FFT stages, 2x 
-      for(int prediv = 0; prediv < arraySize; prediv += length){//Segments
-        for(int oddev = 0; oddev < length / 2; oddev++){ //Butterfly calculation
-          
-          complex double twiddle_factor = cos(2.0 * M_PI * (double)oddev / (double)length) - I * sin(2.0 * M_PI * (double)oddev / (double)length);  //Twiddle factor for the complex part
-          
-          complex double w1 = window[prediv + oddev];  //temp values for butterfly calculations
-          complex double w2 = window[prediv + oddev + length / 2];
+  complex double even[arraySize / 2];
+  complex double odd[arraySize / 2];
 
-          window[oddev + prediv] = w1 + twiddle_factor * w2;
-          window[oddev + prediv + length / 2] = w1 - twiddle_factor * w2;
-
-        } 
-      } 
-    }
-
-
+ for(int i = 0; i < arraySize; i++){ // split into even and odd positions of the windows
+    if(i % 2 == 0){
+      even[i / 2] = window[i];
+          }
+    else{
+      odd[i / 2] = window[i];
+          }
+      }
+    
+  FFT(even, arraySize / 2);
+  FFT(odd,  arraySize / 2); 
+  
+  
+  for (int i = 0; i < (arraySize / 2); i++){
+   
+   complex double twiddle_factor = cos(2.0 * M_PI * (double)i / (double)arraySize) - I * sin(2.0 * M_PI * (double)i / (double)arraySize); // calculates the twiddle factor
+   window[i] = even[i] + twiddle_factor * odd[i];   //perform butterfly calculations to combine results
+   window[i + arraySize / 2] = even[i] - twiddle_factor * odd[i]; 
   }
-
+  
+}
 
 //function to go through FFT and calculate the spectrogram
 void spectrogramFunction(double (*windows)[window_size], double (*spectrogram)[window_size / 2 + 1]){
@@ -97,28 +76,28 @@ void spectrogramFunction(double (*windows)[window_size], double (*spectrogram)[w
     }
 
      FFT(window, window_size); 
+   
     for(int j = 0; j < window_size; j++){
      fftrest[i][j] = window[j];
     }
   }
   
-  //Calculates the absolute value to get the spectrogram for half of the values(in this case 128) 
+  //Calculates the absolute value to get the spectrogram for half of the values 
   
   for(int i = 0; i < numberOfWindows; i++){
-    for(int j = 0; j < window_size / 2 + 1; j++){
+    for(int j = 0; j < window_size / 2 + 1; j++){ //divides the window into 2, to eliminate negative part
      spectrogram[i][j] = cabs(fftrest[i][j]); 
     }
   }
 }
 
+void FFTr(float *signal, double (*spectrogram)[window_size / 2 + 1] ){
 
-
-
-void FFTi(float *signal, double (*spectrogram)[window_size / 2 + 1]){
-
-double windows[numberOfWindows][window_size]; //should be 124 windows, and 256 values in each window array, it holds the windowed data
+double windows[numberOfWindows][window_size]; //should be 124 windows, and 256 values in each window array
 
 windowingFunction(signal, windows); //splits the signal data into windows 
-hanningFunction(window_size, windows); //reduces spectral leakage from windowing
-spectrogramFunction(windows, spectrogram); //calls the FFT function and gets the spectrogram later
+hunningFunction(window_size, windows); //reduces spectral leakage from windowing
+spectrogramFunction(windows, spectrogram); //calls the FFT function and gets the spectrogram
+
+
 }
