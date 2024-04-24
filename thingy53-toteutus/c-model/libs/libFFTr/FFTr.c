@@ -6,7 +6,7 @@
 
 
 int window_size = 256; //parameters for the FFT-algorithm
-int window_step = 128; 
+int window_step = 129; 
 int numberOfWindows = 124; // will be recalculated in the main
 
 //function to split data into windows, in this case signal float array should have 16000 values from audio sample

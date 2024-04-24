@@ -16,11 +16,17 @@ zephyr_library_sources(
   src/layers/dense.c
   src/layers/toinenkonvoluutio.c
   src/layers/maxpooling2d.c
+  src/layers/normalisaatio.c
+  src/layers/resizing.c
+  src/weights_map.c
 )
 zephyr_library_include_directories(include)
 
 zephyr_library_named(fftr)
 zephyr_library_sources(libs/libFFTr/FFTr.c)
 
-target_link_libraries(app PUBLIC model fftr)
-target_include_directories(app PRIVATE libs/libFFTr)
+zephyr_library_named(ffti)
+zephyr_library_sources(libs/libFFTi/FFTi.c)
+
+target_link_libraries(app PUBLIC model ffti)
+target_include_directories(app PRIVATE libs/libFFTr libs/libFFTi)

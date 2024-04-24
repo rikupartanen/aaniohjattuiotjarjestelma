@@ -3,11 +3,11 @@
 #ifndef toinenkonvoluutio_H
 #define toinenkonvoluutio_H
 
-#define NUM_LAYERS 1    // Layereiden määrä
-#define IMAGE_SIZE_Y 4  // Layereiden koko Y-akselilla
-#define IMAGE_SIZE_X 4  // Layereiden koko Y-akselilla
-#define KERNEL_SIZE 3   // Kernelien koko, esim 3 = 3x3
-#define NUM_KERNELS 1   // Kernelien lukumäärä
+#define NUM_LAYERS 32        // Layereiden määrä
+#define IMAGE_SIZE_Y 30      // Layereiden koko Y-akselilla
+#define IMAGE_SIZE_X 30      // Layereiden koko Y-akselilla
+#define KERNEL_SIZE 3        // Kernelien koko, esim 3 = 3x3
+#define NUM_KERNELS 64 * 32  // Kernelien lukumäärä
 
 #define OUT_IMAGES ((NUM_KERNELS / NUM_LAYERS) ? (NUM_KERNELS / NUM_LAYERS) : 1)
 #define OUT_SIZE_Y (IMAGE_SIZE_Y - KERNEL_SIZE + 1)

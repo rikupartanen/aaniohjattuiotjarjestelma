@@ -23,7 +23,7 @@ struct tensor *conv2d1(
     size_t len_ky = kernel->shape[1];  //  number of kernel rows or dimension y
     size_t len_kx = kernel->shape[2];  //  number of kernel columns or dimension x
 
-    size_t len_bias = bias->shape[2];
+    size_t len_bias = bias->shape[0];
 
     if (len_bias != len_kn){
         printf("  Bias and kernel count mismatch, bias %zu, kernel %zu\n", len_bias, len_kn);

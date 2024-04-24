@@ -12,6 +12,7 @@
  */
 int mat_mul(float *vec, size_t vec_len, const struct tensor *kernel, float *out) {
   size_t len = get_shape_len(kernel->shape);
+  printf("Vec: %zu, Ker: %zu\n", vec_len, kernel->shape[0]);
   if (vec_len != kernel->shape[0])
     return -1;
 

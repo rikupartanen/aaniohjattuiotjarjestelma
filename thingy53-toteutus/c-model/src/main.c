@@ -8,7 +8,7 @@
 #include "layers/conv1.h"
 #include "layers/dense.h"
 #include "layers/toinenkonvoluutio.h"
-#include "FFTr.h"
+#include "FFTi.h"
 #include "model.h"
 #include "sample.h"
 #include "qspi/qspi.h"
@@ -30,31 +30,40 @@
     (dst)[i] = (to)(src)[i];         \
   }
 
-#define SPEC_SIZE 124 * 256 / 2
+#define SPEC_SIZE 124 * 129
 int main() {
   printf("Hello World\n");
   qspi_init();
   // PRINT_ARR(sample, 16000, "Sample:");
-  // double spec[0] = {0};
-  // FFTr(sample, (double(*)[])spec);
-  // PRINT_ARR(spec, SPEC_SIZE, "Out after FFT");
+  float *spec = malloc(16000 * sizeof(float));
+  FFTi(sample, (float(*)[])spec);
 
-  // float spec_f[SPEC_SIZE];
+  // float *spec_f = malloc(16000 * sizeof(float));
   // ARR_CAST(spec_f, spec, float, SPEC_SIZE);
+  // free(spec);
 
   // clang-format off
-  TENSOR(input1, VEC(
-      DIM(.1f, .2f, .3f, .4f, .5f, .6f),
-      DIM(.6f, .5f, .4f, .3f, .2f, .1f),
-      DIM(.1f, .2f, .3f, .4f, .5f, .6f),
-      DIM(.6f, .5f, .4f, .3f, .2f, .1f),
-      DIM(.1f, .2f, .3f, .4f, .5f, .6f),
-      DIM(.6f, .5f, .4f, .3f, .2f, .1f)
-  ), SHAPE(1, 6, 6, 1));
-  // TENSOR_P(input2, spec_f, (size_t[])SHAPE(1, 124, 124, 1));
+  // TENSOR(input, VEC(
+  //     DIM(.1f, .2f, .3f, .4f, .5f, .6f),
+  //     DIM(.6f, .5f, .4f, .3f, .2f, .1f),
+  //     DIM(.1f, .2f, .3f, .4f, .5f, .6f),
+  //     DIM(.6f, .5f, .4f, .3f, .2f, .1f),
+  //     DIM(.1f, .2f, .3f, .4f, .5f, .6f),
+  //     DIM(.6f, .5f, .4f, .3f, .2f, .1f)
+  // ), SHAPE(1, 6, 6, 1));
+  struct tensor *input;
+  {
+    input = malloc(sizeof(struct tensor));
+    input->vec = spec;
+    input->shape = malloc(3 * sizeof(size_t));
+
+    input->shape[0] = 129;
+    input->shape[1] = 124;
+    input->shape[2] = 0;
+  }
   // clang-format on
 
-  struct tensor *out = model(input1);
+  struct tensor *out = model(input);
   if (!out) return -1;
   
   printf("OUT\n");

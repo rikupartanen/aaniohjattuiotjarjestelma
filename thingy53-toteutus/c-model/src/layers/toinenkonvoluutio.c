@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 
+#include "weights_map.h"
+
 /*
 Toisen konvoluution dokumentointi
 Konvoluutio tarvitsee arvoiksi kuvien määrän (NUM_LAYERS) sekä koon (IMAGE_SIZE_X & IMAGE_SIZE_Y)
@@ -54,11 +56,7 @@ float relu(float x) {
   return (x > 0) ? x : 0;
 }
 
-typedef float bias_arr[NUM_KERNELS];
-typedef float kernel_arr[NUM_KERNELS][KERNEL_SIZE][KERNEL_SIZE];
-#define FLASH_BASE 0x10000000
-#define conv2d_1_kweights (float*)(FLASH_BASE + 0x24)
-#define conv2d_1_bweights (float*)(FLASH_BASE + 0x48)
+
 
 // Bias-arvot, pidettävä samana koulutuksen jälkeen
 // float bias[NUM_KERNELS] = {0};
@@ -80,20 +78,21 @@ void toinenkonvoluutio(
     float out[OUT_IMAGES][OUT_SIZE_Y][OUT_SIZE_X]
 ) {
   float(*toinen_konvoluutio_output)[OUT_SIZE_Y][OUT_SIZE_X] = out;
-  int output_layers = OUT_IMAGES;
+  // int output_layers = OUT_IMAGES;
   int oikea_output_layer = 0;
   int bias_lisays = 1;
   int layer = 1;
 
+
   // Output array, alustetaan nollilla
   // float toinen_konvoluutio_output[output_layers][IMAGE_SIZE_Y - KERNEL_SIZE + 1][IMAGE_SIZE_X - KERNEL_SIZE + 1];
-  for (int layer_alustus = 0; layer_alustus < output_layers; layer_alustus++) {
-    for (int alustus_y = 0; alustus_y < IMAGE_SIZE_Y - KERNEL_SIZE + 1; alustus_y++) {
-      for (int alustus_x = 0; alustus_x < IMAGE_SIZE_X - KERNEL_SIZE + 1; alustus_x++) {
-        toinen_konvoluutio_output[layer_alustus][alustus_y][alustus_x] = 0.0;
-      }
-    }
-  }
+  // for (int layer_alustus = 0; layer_alustus < output_layers; layer_alustus++) {
+  //   for (int alustus_y = 0; alustus_y < IMAGE_SIZE_Y - KERNEL_SIZE + 1; alustus_y++) {
+  //     for (int alustus_x = 0; alustus_x < IMAGE_SIZE_X - KERNEL_SIZE + 1; alustus_x++) {
+  //       toinen_konvoluutio_output[layer_alustus][alustus_y][alustus_x] = 0.0;
+  //     }
+  //   }
+  // }
 
   // Konvoluutioidaan jokaisen kernelin verran
   printf("Aloitetaan konvoluutio\n");
@@ -131,15 +130,15 @@ void toinenkonvoluutio(
   }
 
   // Printataan jokaisen konvoluution tulos
-  printf("Aloitetaan tulosten tulostus\n");
-  for (int i = 0; i < output_layers; ++i) {
-    printf("Output of convolution # %d:\n", i + 1);
-    for (int j = 0; j <= IMAGE_SIZE_Y - KERNEL_SIZE; ++j) {
-      for (int k = 0; k <= IMAGE_SIZE_X - KERNEL_SIZE; k++) {
-        printf("%.2f\t", toinen_konvoluutio_output[i][j][k]);
-      }
-      printf("\n");
-    }
-    printf("\n");
-  }
+  // printf("Aloitetaan tulosten tulostus\n");
+  // for (int i = 0; i < output_layers; ++i) {
+  //   printf("Output of convolution # %d:\n", i + 1);
+  //   for (int j = 0; j <= IMAGE_SIZE_Y - KERNEL_SIZE; ++j) {
+  //     for (int k = 0; k <= IMAGE_SIZE_X - KERNEL_SIZE; k++) {
+  //       printf("%.2f\t", toinen_konvoluutio_output[i][j][k]);
+  //     }
+  //     printf("\n");
+  //   }
+  //   printf("\n");
+  // }
 }
