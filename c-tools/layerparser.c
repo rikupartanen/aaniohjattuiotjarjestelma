@@ -8,9 +8,6 @@
 #include "layerparser.h"
 #include "weights.h"
 
-#define FILENAME "map.toml"
-
-
 const char COMMENT = '#';
 
 /* Trim a string in place */
@@ -85,11 +82,13 @@ static size_t trim_header(char *s){
     return len;
 }
 
+
 /* it seems trimming headers and arrays
  * is exactly the same thing so reuse that */
 static inline size_t trim_shape(char *s){
     return trim_header(s);
 }
+
 
 /* Probably unnecessary as we don't care about it 
  * but keep this here for now */
@@ -98,6 +97,7 @@ static char *parse_header(char *s){
 
     return s;
 }
+
 
 /* Returns the length of the shape array, actual array will be returned to *out
  * WARNING: this will mangle s through strtok */
@@ -138,6 +138,7 @@ static size_t parse_shape(char *s, size_t **out){
 
     return i;
 }
+
 
 static char *parse_name(char *s){
     size_t len = strlen(s);
@@ -208,6 +209,7 @@ void free_layers(struct layer **layers, size_t n){
     }
 }
 
+
 static inline void print_shape(size_t *shape, size_t len){
     printf("{");
     for(size_t i = 0; i < len; ++i){
@@ -228,6 +230,7 @@ static inline void print_layer(struct layer *l){
     printf("\n\n");
 }
 
+
 void get_weights(struct layer *l){
     if(&map[u8_hash(l->name)] == NULL){
         printf("Error: no weights found for hash %#x\n", u8_hash(l->name));
@@ -236,6 +239,7 @@ void get_weights(struct layer *l){
 
     l->weights = &map[u8_hash(l->name)];
 }
+
 
 void print_layers(struct layer **layers, size_t n){
     for(size_t i = 0; i < n; ++i){
@@ -290,6 +294,7 @@ size_t get_layers(const char *filename, struct layer ***layers){
             (*layers)[section - 1] = malloc(sizeof(struct layer));
         }
 
+        /* If we've not found a section yet keep looking */
         if(section == 0){
             continue;
         }
