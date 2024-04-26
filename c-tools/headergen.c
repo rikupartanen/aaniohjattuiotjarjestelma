@@ -65,7 +65,7 @@ int write_header(const char *name, struct layer **layers, size_t n){
     }
 
 
-    fprintf(fp, "#endif /* %s_H__ */", header_guard);
+    fprintf(fp, "#endif /* %s_H__ */\n", header_guard);
     free(header_guard);
     free(fullname);
     fclose(fp);
