@@ -47,17 +47,6 @@ void print_offsets(struct layer *l){
     putchar('\n');
 }
 
-void read_flash(int fd, size_t len){
-    uint32_t *rx_buff = calloc(sizeof(uint8_t), len*sizeof(uint8_t));
-    dump_flash(fd, rx_buff, len);
-
-    for(size_t i = 0; i < 40; ++i){
-        printf("%#x\n", rx_buff[i]);
-    }
-
-    free(rx_buff);
-
-}
 
 int main(int argc, char *argv[]){
     /* usage: ./main filename [offsets|header|write|all][headername]  */
