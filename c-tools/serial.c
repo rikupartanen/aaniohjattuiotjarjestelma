@@ -21,6 +21,7 @@
 #define PROT_WSTART 0x80
 #define PROT_WSTOP  0x90
 #define PROT_WRITE  0xA0
+#define PROT_ERASE  0xB0
 
 #define MAX_LEN 128
 #define WORDSIZE 4
@@ -134,6 +135,7 @@ int do_write(int fd, const void *tx_buff, uint8_t len){
         buff = (uint8_t*)tx_buff;
     }
 
+
     cmd = PROT_WRITE;
     write(fd, &cmd, 1);
     read(fd, &ret, 1);
@@ -153,6 +155,7 @@ int do_write(int fd, const void *tx_buff, uint8_t len){
 
     /* The receiver will increment len by 1
      * so we need to send len - 1 */
+
     cmd = aligned - 1;
     write(fd, &cmd, 1);
     read(fd, &ret, 1);
@@ -189,12 +192,22 @@ end:
     return retval;
 }
 
+void erase_chip(int fd){
+    char cmd = PROT_ERASE;
+    char ret = 0;
+    write(fd, &cmd, 1);
+    read(fd, &ret, 1);
+    if(ret != UART_ACK){
+        puts("Erase chip: did not get ACK");
+    }
+}
+
 
 int write_weights(int fd, struct layer *l){
     size_t kernel_bytes = 0;
     size_t bias_bytes = 0;
-    kernel_bytes = l->weights->klen * sizeof(_Float16);
-    bias_bytes = l->weights->blen * sizeof(_Float16);
+    kernel_bytes = l->weights->klen * sizeof(float);
+    bias_bytes = l->weights->blen * sizeof(float);
 
     printf("\nWriting layer %s\n", l->name);
 
@@ -207,19 +220,22 @@ int write_weights(int fd, struct layer *l){
     if(kernel_bytes % MAX_LEN != 0){
         size_t blocks = kernel_bytes / MAX_LEN;
 
+        printf("Starting write of blocks\n");
+
         /* First write out all our 128 byte blocks */
         for(size_t i = 0; i < blocks; ++i){
-            /* weights->kernel is a _Float16 array so we must go by elements here, not bytes */
-            do_write(fd, l->weights->kernel + (i * MAX_LEN / sizeof(_Float16)), MAX_LEN);
+            /* weights->kernel is a float array so we must go by elements here, not bytes */
+            do_write(fd, l->weights->kernel + (i * MAX_LEN / sizeof(float)), MAX_LEN);
         }
 
         /* and then whatever is left over */
-        do_write(fd, l->weights->kernel + ((blocks * MAX_LEN) / sizeof(_Float16)), kernel_bytes % MAX_LEN);
+        printf("Starting write of leftover\n");
+        do_write(fd, l->weights->kernel + ((blocks * MAX_LEN) / sizeof(float)), kernel_bytes % MAX_LEN);
     }else{
         /* if all our data fits neatly in 128 byte blocks just write them */
         size_t blocks = kernel_bytes / MAX_LEN;
         for(size_t i = 0; i < blocks; ++i){
-            do_write(fd, l->weights->kernel + (i * MAX_LEN / sizeof(_Float16)), MAX_LEN);
+            do_write(fd, l->weights->kernel + (i * MAX_LEN / sizeof(float)), MAX_LEN);
         }
     }
 
@@ -236,15 +252,15 @@ int write_weights(int fd, struct layer *l){
         size_t blocks = bias_bytes / MAX_LEN;
 
         for(size_t i = 0; i < blocks; ++i){
-            do_write(fd, l->weights->bias + (i * MAX_LEN / sizeof(_Float16)), MAX_LEN);
+            do_write(fd, l->weights->bias + (i * MAX_LEN / sizeof(float)), MAX_LEN);
         }
 
-        do_write(fd, l->weights->bias + ((blocks * MAX_LEN) / sizeof(_Float16)), bias_bytes % MAX_LEN);
+        do_write(fd, l->weights->bias + ((blocks * MAX_LEN) / sizeof(float)), bias_bytes % MAX_LEN);
 
     }else{
         size_t blocks = bias_bytes / MAX_LEN;
         for(size_t i = 0; i < blocks; ++i){
-            do_write(fd, l->weights->bias + (i * MAX_LEN / sizeof(_Float16)), MAX_LEN);
+            do_write(fd, l->weights->bias + (i * MAX_LEN / sizeof(float)), MAX_LEN);
         }
     }
 

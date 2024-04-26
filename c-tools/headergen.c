@@ -34,15 +34,18 @@ int write_header(const char *name, struct layer **layers, size_t n){
     char *includes =    "#include <stddef.h>\n";
     char *defines =     "#define FLASH_BASE 0x10000000\n\n";
 
+    fprintf(fp, "%s", includes);
+    fprintf(fp, "%s", defines);
+
     for(size_t i = 0; i < n; ++i){
         /* Kernel weights */
-        fprintf(fp, "const _Float16 *%s_kweights = (_Float16*)(FLASH_BASE + %#x);\n", layers[i]->name, layers[i]->offsets->kernel);
+        fprintf(fp, "const float *%s_kweights = (float*)(FLASH_BASE + %#x);\n", layers[i]->name, layers[i]->offsets->kernel);
 
         /* Check for NULL pointer */
         if(layers[i]->bshape[0] == 0){
-            fprintf(fp, "const _Float16 *%s_bweights = NULL;\n", layers[i]->name);
+            fprintf(fp, "const float *%s_bweights = NULL;\n", layers[i]->name);
         }else{
-            fprintf(fp, "const _Float16 *%s_bweights = (_Float16*)(FLASH_BASE + %#x);\n", layers[i]->name, layers[i]->offsets->bias);
+            fprintf(fp, "const float *%s_bweights = (float*)(FLASH_BASE + %#x);\n", layers[i]->name, layers[i]->offsets->bias);
         }
 
         /* Kernel Shape */
@@ -65,7 +68,7 @@ int write_header(const char *name, struct layer **layers, size_t n){
     }
 
 
-    fprintf(fp, "#endif /* %s_H__ */", header_guard);
+    fprintf(fp, "#endif /* %s_H__ */\n", header_guard);
     free(header_guard);
     free(fullname);
     fclose(fp);
