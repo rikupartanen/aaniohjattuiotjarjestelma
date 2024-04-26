@@ -6,13 +6,22 @@ project(c-tests C)
 add_subdirectory(libs)
 
 add_executable(main src/main.c)
-target_sources(main PRIVATE src/common.c src/model.c)
-target_sources(main PRIVATE src/layers/conv1.c src/layers/dense.c src/layers/toinenkonvoluutio.c)
-target_link_libraries(main PRIVATE fftr)
-target_include_directories(main PRIVATE libs)
+target_sources(main PRIVATE src/layers/conv2d.c)
+target_sources(main PRIVATE src/common.c src/model.c src/weights_map.c)
+target_sources(main PRIVATE 
+  src/layers/conv1.c
+  src/layers/dense.c
+  src/layers/toinenkonvoluutio.c
+  src/layers/normalisaatio.c  
+  src/layers/resizing.c  
+  src/layers/maxpooling2d.c
+)
+target_link_libraries(main PRIVATE ffti)
+target_include_directories(main PRIVATE libs include)
 
 
-target_compile_options(main PRIVATE -O2 -Wall -Wextra)
+target_compile_options(main PRIVATE -Og -g -Wall -Wextra )
+# target_link_options(main PRIVATE -Wl,--stack-size=4194304)
 
 project(cpp-tests CXX)
 add_executable(main_cpp main.cpp)

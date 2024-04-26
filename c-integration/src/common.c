@@ -51,6 +51,7 @@ void free_tensor(struct tensor *tensor) {
 extern inline void reshape(struct tensor *tensor, size_t *new_shape);
 
 void print_shape(struct tensor *out) {
+  printf("Shape: ");
   for (size_t i = 0; out->shape[i]; i++) {
     if (i % 5 == 0 && i != 0) printf("\n");
     else if (i != 0) printf(" ");
