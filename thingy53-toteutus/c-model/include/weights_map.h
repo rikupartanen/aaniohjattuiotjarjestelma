@@ -29,3 +29,4 @@ extern const size_t dense_1_kshape[];
 extern const size_t dense_1_bshape[];
 
 #endif /* REALWEIGHTS_H__ */
+
