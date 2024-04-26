@@ -5,7 +5,8 @@
 struct tensor *conv2d1_fixed(
     const struct tensor *input,
     const struct tensor *kernel,
-    const struct tensor *bias) {
+    const struct tensor *bias
+) {
   //   size_t ker_shape_len = get_shape_len(kernel->shape);  // length of shape list
   //   size_t in_shape_len = get_shape_len(input->shape);  // length of shape list
 
@@ -46,9 +47,13 @@ struct tensor *conv2d1_fixed(
             for (size_t k = 0; k < len_kf; k++) {
               size_t i = iy * len_ix * len_in + ky;
               size_t j = ix * len_in + kx;
-
               float in_pos_content = input->vec[i + j + k];
-              float k_pos_content = kernel->vec[ky + kx + k + kn];
+
+              size_t ker_pos = (ky * len_kx * len_kf * len_kn)
+                             + (kx * len_kf * len_kn)
+                             + (k * len_kn) + kn;
+              float k_pos_content = kernel->vec[ker_pos];
+
               tempcount += in_pos_content * k_pos_content;
             }
           }
