@@ -7,5 +7,6 @@ int open_port(const char *port);
 void close_port(int fd);
 int send_data(int fd, void *tx_buff, size_t len);
 int write_weights(int, struct layer*);
+void erase_chip(int fd);
 
 #endif /* SERIAL_H__ */

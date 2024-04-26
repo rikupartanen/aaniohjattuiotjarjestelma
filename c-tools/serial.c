@@ -11,6 +11,7 @@
 
 #include "serial.h"
 #include "layer.h"
+#include "floattype.h"
 
 
 /* These are just the ASCII control codes for ACK and NAK */
@@ -206,8 +207,8 @@ void erase_chip(int fd){
 int write_weights(int fd, struct layer *l){
     size_t kernel_bytes = 0;
     size_t bias_bytes = 0;
-    kernel_bytes = l->weights->klen * sizeof(float);
-    bias_bytes = l->weights->blen * sizeof(float);
+    kernel_bytes = l->weights->klen * sizeof(FLOAT_T);
+    bias_bytes = l->weights->blen * sizeof(FLOAT_T);
 
     printf("\nWriting layer %s\n", l->name);
 
@@ -225,17 +226,17 @@ int write_weights(int fd, struct layer *l){
         /* First write out all our 128 byte blocks */
         for(size_t i = 0; i < blocks; ++i){
             /* weights->kernel is a float array so we must go by elements here, not bytes */
-            do_write(fd, l->weights->kernel + (i * MAX_LEN / sizeof(float)), MAX_LEN);
+            do_write(fd, l->weights->kernel + (i * MAX_LEN / sizeof(FLOAT_T)), MAX_LEN);
         }
 
         /* and then whatever is left over */
         printf("Starting write of leftover\n");
-        do_write(fd, l->weights->kernel + ((blocks * MAX_LEN) / sizeof(float)), kernel_bytes % MAX_LEN);
+        do_write(fd, l->weights->kernel + ((blocks * MAX_LEN) / sizeof(FLOAT_T)), kernel_bytes % MAX_LEN);
     }else{
         /* if all our data fits neatly in 128 byte blocks just write them */
         size_t blocks = kernel_bytes / MAX_LEN;
         for(size_t i = 0; i < blocks; ++i){
-            do_write(fd, l->weights->kernel + (i * MAX_LEN / sizeof(float)), MAX_LEN);
+            do_write(fd, l->weights->kernel + (i * MAX_LEN / sizeof(FLOAT_T)), MAX_LEN);
         }
     }
 
@@ -252,15 +253,15 @@ int write_weights(int fd, struct layer *l){
         size_t blocks = bias_bytes / MAX_LEN;
 
         for(size_t i = 0; i < blocks; ++i){
-            do_write(fd, l->weights->bias + (i * MAX_LEN / sizeof(float)), MAX_LEN);
+            do_write(fd, l->weights->bias + (i * MAX_LEN / sizeof(FLOAT_T)), MAX_LEN);
         }
 
-        do_write(fd, l->weights->bias + ((blocks * MAX_LEN) / sizeof(float)), bias_bytes % MAX_LEN);
+        do_write(fd, l->weights->bias + ((blocks * MAX_LEN) / sizeof(FLOAT_T)), bias_bytes % MAX_LEN);
 
     }else{
         size_t blocks = bias_bytes / MAX_LEN;
         for(size_t i = 0; i < blocks; ++i){
-            do_write(fd, l->weights->bias + (i * MAX_LEN / sizeof(float)), MAX_LEN);
+            do_write(fd, l->weights->bias + (i * MAX_LEN / sizeof(FLOAT_T)), MAX_LEN);
         }
     }
 

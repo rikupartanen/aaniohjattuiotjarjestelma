@@ -1,10 +1,12 @@
 #ifndef LAYER_H__
 #define LAYER_H__
 
+#include "floattype.h"
+
 struct layer_map{
-    const _Float16 *kernel;
+    const FLOAT_T *kernel;
     const size_t klen;
-    const _Float16 *bias;
+    const FLOAT_T *bias;
     const size_t blen;
 };
 
