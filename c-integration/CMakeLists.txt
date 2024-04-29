@@ -6,14 +6,16 @@ project(c-tests C)
 add_subdirectory(libs)
 
 add_executable(main src/main.c)
-target_sources(main PRIVATE src/layers/conv2d.c)
-target_sources(main PRIVATE src/common.c src/model.c src/weights_map.c)
-target_sources(main PRIVATE 
-  src/layers/conv1.c
+target_sources(main PRIVATE src/common.c src/model.c)
+target_sources(main PRIVATE
+  src/weights/weight_tensors.c
+  src/weights/weights_map.c
+)
+target_sources(main PRIVATE
+  src/layers/conv2d.c
   src/layers/dense.c
-  src/layers/toinenkonvoluutio.c
-  src/layers/normalisaatio.c  
-  src/layers/resizing.c  
+  src/layers/normalisaatio.c
+  src/layers/resizing.c
   src/layers/maxpooling2d.c
 )
 target_link_libraries(main PRIVATE ffti)

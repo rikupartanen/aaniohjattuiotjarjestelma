@@ -40,36 +40,7 @@ int main() {
   // ARR_CAST(spec_f, spec, float, SPEC_SIZE);
   struct tensor *input = create_tensor(spec, spec_shape);
 
-  // clang-format off
-  // TENSOR(input1, VEC(
-  //     DIM(.1f, .2f, .3f, .4f, .5f, .6f),
-  //     DIM(.6f, .5f, .4f, .3f, .2f, .1f),
-  //     DIM(.1f, .2f, .3f, .4f, .5f, .6f),
-  //     DIM(.6f, .5f, .4f, .3f, .2f, .1f),
-  //     DIM(.1f, .2f, .3f, .4f, .5f, .6f),
-  //     DIM(.6f, .5f, .4f, .3f, .2f, .1f)
-  // ), SHAPE(6, 6, 1));
-  // TENSOR_P(input2, spec_f, (size_t[])SHAPE(1, 124, 124, 1));
-  // TENSOR(ker, VEC(
-  //   DIM(
-  //     DIM(0.1, 0.2),
-  //     DIM(0.3, 0.4)
-  //   ),
-  //   DIM(
-  //     DIM(0.4, 0.3),
-  //     DIM(0.2, 0.1)
-  //   )
-  // ), SHAPE(2, 2, 1, 2));
-  // TENSOR(ker, VEC(
-  //   DIM(
-  //     DIM(0.1, 0.2),
-  //     DIM(0.3, 0.4)
-  //   ),
-  // ), SHAPE(2, 2, 1, 1));
-  // clang-format on
-
   struct tensor *out;
-  // out = conv2d1_fixed(input1, ker, NULL);
   out = model(input);
   if (!out) return -1;
 
@@ -77,6 +48,6 @@ int main() {
   _print_tensor(out);
   print_shape(out);
 
-  // free_tensor(out);
+  free_tensor(out);
   return 0;
 }

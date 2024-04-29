@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 
 // Create shape array
 #define SHAPE(...) \
@@ -38,6 +39,19 @@ inline void reshape(struct tensor *tensor, size_t *new_shape) {
   tensor->shape = malloc(len * sizeof(size_t));
   memmove(tensor->shape, new_shape, len * sizeof(size_t));
 }
+
+inline void create_shape(size_t *shape, size_t len, ...) {
+  va_list args;
+  va_start(args, len);
+  
+  size_t i;
+  for (i = 0; i < len - 1; i++) {
+    shape[i] = va_arg(args, size_t);
+  }
+  shape[i] = 0;
+
+  va_end(args);
+} 
 
 void print_shape(struct tensor *out);
 void _print_tensor(struct tensor *out);

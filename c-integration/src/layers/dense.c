@@ -31,7 +31,8 @@ int mat_mul(float *vec, size_t vec_len, const struct tensor *kernel, float *out)
 struct tensor *dense(
     const struct tensor *input,
     const struct tensor *kernel,
-    const struct tensor *bias
+    const struct tensor *bias,
+    struct tensor *out
 ) {
   size_t ker_shape_len = get_shape_len(kernel->shape);
   size_t in_shape_len = get_shape_len(input->shape);
@@ -41,7 +42,8 @@ struct tensor *dense(
   size_t vec_len = input->shape[in_shape_len - 1];  // Convert len to 0 index
 
   size_t size = batches * mid * kernel->shape[ker_shape_len - 1];
-  float ret[size];
+  float *ret = malloc(size * sizeof(float));
+  out->vec = ret;
 
   for (size_t b = 0; b < batches; b++) {
     for (size_t m = 0; m < mid; m++) {
@@ -71,7 +73,7 @@ struct tensor *dense(
     }
   }
 
-  size_t out_shape[in_shape_len + 1];
+  size_t *out_shape = malloc((in_shape_len + 1) * sizeof(size_t));
   for (size_t i = 0; i < in_shape_len - 1; i++)
     out_shape[i] = input->shape[i];
   out_shape[in_shape_len - 1] = kernel->shape[ker_shape_len - 1];
@@ -85,5 +87,6 @@ struct tensor *dense(
   printf("\n");
 #endif
 
-  return create_tensor(ret, out_shape);
+  out->shape = out_shape;
+  return out;
 }

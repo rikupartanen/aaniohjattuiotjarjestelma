@@ -7,7 +7,8 @@ int mat_mul(float *vec, size_t vec_len, const struct tensor *kernel, float *out)
 struct tensor *dense(
     const struct tensor *input,
     const struct tensor *kernel,
-    const struct tensor *bias
+    const struct tensor *bias,
+    struct tensor *out
 );
 
 #endif /* F27BD3AE_D9EC_44F5_90AB_79D0BAB9DBAD */

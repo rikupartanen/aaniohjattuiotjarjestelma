@@ -1,81 +1,88 @@
 #include "common.h"
-#include "layers/conv1.h"
+#include "layers/conv2d.h"
 #include "layers/dense.h"
 #include "layers/maxpooling2d.h"
 #include "layers/normalisaatio.h"
 #include "layers/resizing.h"
-#include "layers/toinenkonvoluutio.h"
-#include "weights_map.h"
-#include "layers/conv2d.h"
+#include "weights/weight_tensors.h"
 
-#define create_static_tensor(...) create_tensor(__VA_ARGS__)
+#define STRIDE_SIZE 2
+#define POOL_SIZE 2
+
+void swap(struct tensor **a, struct tensor **b) {
+  struct tensor *tmp = *a;
+  *a = *b;
+  *b = tmp;
+}
+
+static void relu(struct tensor *tensor) {
+  size_t len = get_shape_len(tensor->shape);
+  len = geometric_sum(tensor->shape, len, 0, 0);
+  for (size_t i = 0; i < len; i++) {
+    tensor->vec[i] = tensor->vec[i] < 0 ? 0 : tensor->vec[i];
+  }
+}
+
+void _free(struct tensor *in) {
+  if (!in) return;
+  free(in->vec);
+  free(in->shape);
+}
 
 struct tensor *model(struct tensor *input) {
-  struct tensor *tmp;
-  struct tensor *out;
+  struct tensor *tmp = malloc(sizeof(*tmp));
+  struct tensor *out = malloc(sizeof(*out));
 
   float *ret = malloc(32 * 32 * sizeof(float));
   resizing((float(*)[])input->vec, (float(*)[])ret);
   free_tensor(input);
   normalisaatio((float(*)[])ret);
   {
-    out = malloc(sizeof(struct tensor));
     out->vec = ret;
     out->shape = malloc(4 * sizeof(size_t));
-
-    out->shape[0] = 32;
-    out->shape[1] = 32;
-    out->shape[2] = 1;
-    out->shape[3] = 0;
+    create_shape(out->shape, 4, 32, 32, 1);
   }
-
 
   puts("Conv2d");
-  const struct tensor *conv2d_kernel = create_static_tensor(conv2d_kweights, conv2d_kshape);
-  const struct tensor *conv2d_bias = create_static_tensor(conv2d_bweights, conv2d_bshape);
-  tmp = conv2d1_fixed(out, conv2d_kernel, conv2d_bias);
-  free_tensor(out);
-  out = tmp;
-  
+  swap(&out, &tmp);
+  conv2d1_fixed(tmp, &conv2d_kernel, &conv2d_bias, out);
+  _free(tmp);
 
   puts("Conv2d 2");
-  conv2d_kernel = create_static_tensor(conv2d_1_kweights, conv2d_1_kshape);
-  conv2d_bias = create_static_tensor(conv2d_1_bweights, conv2d_1_bshape);
-  tmp = conv2d1_fixed(out, conv2d_kernel, conv2d_bias);
-  free_tensor(out);
+  swap(&out, &tmp);
+  conv2d1_fixed(tmp, &conv2d_1_kernel, &conv2d_1_bias, out);
+  _free(tmp);
 
   puts("Maxpooling");
+  swap(&out, &tmp);
   {
-    out = malloc(sizeof(struct tensor));
     out->vec = calloc(12544, sizeof(float));
     out->shape = malloc(3 * sizeof(size_t));
-
-    out->shape[0] = 1;
-    out->shape[1] = 12544;
-    out->shape[2] = 0;
+    create_shape(out->shape, 3, 1, 12544);
   }
-  maxpooling2d(tmp->vec, 1, 64, 28, 28, 2, 2, 2, 2, out->vec);
-
+  maxpooling2d(
+      tmp->vec,
+      1,              // Batch size
+      tmp->shape[2],  // Input channel count
+      tmp->shape[0],  // Input height
+      tmp->shape[1],  // Input width
+      POOL_SIZE,
+      POOL_SIZE,
+      STRIDE_SIZE,
+      STRIDE_SIZE,
+      out->vec
+  );
+  _free(tmp);
 
   puts("Dense");
-  const struct tensor *dense_kernel = create_static_tensor(dense_kweights, dense_kshape);
-  const struct tensor *dense_bias = create_static_tensor(dense_bweights, dense_bshape);
-  tmp = dense(out, dense_kernel, dense_bias);
-  free_tensor(out);
-  out = tmp;
-
-  size_t len = get_shape_len(out->shape);
-  len = geometric_sum(out->shape, len, 0, 0);
-  for (size_t i = 0; i < len; i++) {
-    out->vec[i] = out->vec[i] < 0 ? 0 : out->vec[i];
-  }
+  swap(&out, &tmp);
+  relu(dense(tmp, &dense_kernel, &dense_bias, out));
+  _free(tmp);
 
   puts("Dense 2");
-  const struct tensor *dense_1_kernel = create_static_tensor(dense_1_kweights, dense_1_kshape);
-  const struct tensor *dense_1_bias = create_static_tensor(dense_1_bweights, dense_1_bshape);
-  tmp = dense(out, dense_1_kernel, dense_1_bias);
-  free_tensor(out);
-  out = tmp;
+  swap(&out, &tmp);
+  dense(tmp, &dense_1_kernel, &dense_1_bias, out);
+  free_tensor(tmp);
 
   puts("\nModel fin:");
   return out;

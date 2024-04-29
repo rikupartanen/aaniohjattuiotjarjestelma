@@ -1,16 +1,16 @@
+#include "conv2d.h"
+
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../common.h"
 
 struct tensor *conv2d1_fixed(
     const struct tensor *input,
     const struct tensor *kernel,
-    const struct tensor *bias
+    const struct tensor *bias,
+    struct tensor *out
 ) {
-  //   size_t ker_shape_len = get_shape_len(kernel->shape);  // length of shape list
-  //   size_t in_shape_len = get_shape_len(input->shape);  // length of shape list
-
-  size_t in_shape_len = get_shape_len(input->shape);
   size_t kernel_shape_len = get_shape_len(kernel->shape);
   if (kernel_shape_len != 4) return NULL;
 
@@ -23,9 +23,6 @@ struct tensor *conv2d1_fixed(
   size_t len_kf = kernel->shape[2];  // number of kernel filters
   size_t len_kn = kernel->shape[3];  // nunber of kernels
 
-  // size_t kx_2d_len = len_ky * len_kx * len_kf;
-  // size_t ky_2d_len = len_kn;
-
   if (bias) {
     size_t len_bias = bias->shape[0];
     if (len_bias != len_kn) {
@@ -37,7 +34,8 @@ struct tensor *conv2d1_fixed(
   size_t len_ox = (len_ix - len_kx + 1);  // Output x length
 
   size_t size = ((len_oy) * (len_ox)*len_kn);
-  float ret[size];
+  out->vec = malloc(size * sizeof(float));
+  float *ret = out->vec;
 
   size_t position = 0;
   for (size_t kn = 0; kn < len_kn; kn++) {
@@ -70,6 +68,7 @@ struct tensor *conv2d1_fixed(
     }
   }
 
-  size_t out_shape[] = SHAPE(len_oy, len_ox, len_kn);
-  return create_tensor(ret, out_shape);
+  out->shape = malloc(4 * sizeof(size_t));
+  create_shape(out->shape, 4, len_oy, len_ox, len_kn);
+  return out;
 }

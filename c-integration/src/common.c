@@ -49,6 +49,8 @@ void free_tensor(struct tensor *tensor) {
 
 // Set a new shape for the tensor
 extern inline void reshape(struct tensor *tensor, size_t *new_shape);
+// Set shape from variable len params
+extern inline void create_shape(size_t *shape, size_t len, ...);
 
 void print_shape(struct tensor *out) {
   printf("Shape: ");
