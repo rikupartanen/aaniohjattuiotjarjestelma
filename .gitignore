@@ -2,5 +2,8 @@
 **/__pycache__
 **/build*/
 
+**/.vscode
+**/.cache
 .local/
 
+**/CMakeLists.txt.user
